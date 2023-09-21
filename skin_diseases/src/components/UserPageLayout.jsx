@@ -21,9 +21,9 @@ export default function UserPageLayout() {
           })
       }, [])
 
-    if (!token) {
-        return <Navigate to="/login" />
-    }
+    // if (!token) {
+    //     return <Navigate to="/login" />
+    // }
     //   const { token } = useStateContext()
     //   if (token) {
     //     return <Navigate to="/" />
@@ -78,7 +78,7 @@ export default function UserPageLayout() {
 
             {/* End Header Section */}
 
-            <div className="w-full">
+            <div className="w-full min-h-[60vh]">
                 <Outlet />
             </div>
 

@@ -7,6 +7,7 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use((config) => {
     const token = localStorage.getItem('SD_ACCESS_TOKEN')
+    // const token = 
     config.headers.Authorization = `Bearer ${token}`
 
     return config;

@@ -1,31 +1,32 @@
-package com.easy.skin_diseases_backend.model;
+package com.easy.skin_diseases_backend.dto;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @Column(name = "user_id", length = 45)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class UserDTO {
+
     private Long userId;
-
-    @Column(name = "name", length = 256)
     private String name;
-
-    @Column(name = "email", length = 256)
     private String email;
-    @Column(name = "password", length = 256)
     private String password;
-    @Column(name = "type", length = 20)
     private String type;
 
-    public Long getId() {
+    public UserDTO() {
+    }
+
+    public UserDTO(Long userId, String name, String email, String password, String type) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.type = type;
+    }
+
+    public Long getUserId() {
         return userId;
     }
 
-    public void setId(Long id) {
-        this.userId = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -60,21 +61,10 @@ public class User {
         this.type = type;
     }
 
-    public User() {
-    }
-
-    public User(Long userId, String name, String email, String password, String type) {
-        this.userId = userId;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.type = type;
-    }
-
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + userId +
+        return "UserDTO{" +
+                "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

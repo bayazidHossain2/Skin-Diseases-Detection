@@ -4,6 +4,7 @@ import Login from "./views/auth/login";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Signup from "./views/auth/signup";
+import UserPageLayout from "./components/UserPageLayout";
 
 
 const router = createBrowserRouter([
@@ -17,6 +18,12 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <DefaultLayout/>
+    },
+
+    {
+        path: '/home',
+        element: <UserPageLayout />,
+        
     },
 
 
