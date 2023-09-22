@@ -6,11 +6,10 @@ import { useNavigate } from "react-router-dom";
 export default function Header() {
     const disSelect = 'text-lg cursor-pointer text-gray-400 hover:text-gray-600';
     const select = 'text-lg cursor-pointer text-blue-600 font-bold';
-    const [homestyle, sethomestyle] = useState(select);
-    const [gallerystyle, setgallerystyle] = useState(disSelect);
-    const [blogstyle, setblogstyle] = useState(disSelect);
-    const [eventstyle, seteventstyle] = useState(disSelect);
-    const [memberstyle, setmemberstyle] = useState(disSelect);
+    const [homestyle, setHomestyle] = useState(select);
+    const [aboutstyle, setAboutstyle] = useState(disSelect);
+    const [diseasesstyle, setDiseasesstyle] = useState(disSelect);
+    const [feedbackstyle, setFeedbackstyle] = useState(disSelect);
     const navigate = useNavigate();
 
     const { user, token, setUser, setToken } = useStateContext();
@@ -37,51 +36,39 @@ export default function Header() {
     }
 
     const HomeListener = (ev) => {
-        sethomestyle(select);
-        setgallerystyle(disSelect);
-        setblogstyle(disSelect);
-        seteventstyle(disSelect);
-        setmemberstyle(disSelect);
+        setHomestyle(select);
+        setAboutstyle(disSelect);
+        setDiseasesstyle(disSelect);
+        setFeedbackstyle(disSelect);
         navigate('/home');
     }
-    const GalleryListener = (ev) => {
-        sethomestyle(disSelect);
-        setgallerystyle(select);
-        setblogstyle(disSelect);
-        seteventstyle(disSelect);
-        setmemberstyle(disSelect);
-        navigate('/gallery');
+    const AboutListener = (ev) => {
+        setHomestyle(disSelect);
+        setAboutstyle(select);
+        setDiseasesstyle(disSelect);
+        setFeedbackstyle(disSelect);
+        navigate('/about');
     }
-    const BlogListener = (ev) => {
-        sethomestyle(disSelect);
-        setgallerystyle(disSelect);
-        setblogstyle(select);
-        seteventstyle(disSelect);
-        setmemberstyle(disSelect);
-        navigate('/blogsu');
+    const DiseasesListener = (ev) => {
+        setHomestyle(disSelect);
+        setAboutstyle(disSelect);
+        setDiseasesstyle(select);
+        setFeedbackstyle(disSelect);
+        navigate('/diseases');
     }
-    const EventListener = (ev) => {
-        sethomestyle(disSelect);
-        setgallerystyle(disSelect);
-        setblogstyle(disSelect);
-        seteventstyle(select);
-        setmemberstyle(disSelect);
-        navigate('/eventsu');
+    const FeedbackListener = (ev) => {
+        setHomestyle(disSelect);
+        setAboutstyle(disSelect);
+        setDiseasesstyle(disSelect);
+        setFeedbackstyle(select);
+        navigate('/feedback');
     }
-    const MemberListener = (ev) => {
-        sethomestyle(disSelect);
-        setgallerystyle(disSelect);
-        setblogstyle(disSelect);
-        seteventstyle(disSelect);
-        setmemberstyle(select);
-        navigate('/members');
-    }
+    
     const ProfileListener = () => {
-        sethomestyle(disSelect);
-        setgallerystyle(disSelect);
-        setblogstyle(disSelect);
-        seteventstyle(disSelect);
-        setmemberstyle(disSelect);
+        setHomestyle(disSelect);
+        setAboutstyle(disSelect);
+        setDiseasesstyle(disSelect);
+        setFeedbackstyle(select);
         navigate('/profile');
     }
     return (
@@ -93,7 +80,7 @@ export default function Header() {
                     </svg>
                     <h2>Easy Cure</h2>
                 </a>
-                <div class="lg:hidden">
+                <div class="sm:hidden">
                     <button class="navbar-burger flex items-center text-blue-600 p-3">
                         <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <title>Mobile menu</title>
@@ -101,32 +88,26 @@ export default function Header() {
                         </svg>
                     </button>
                 </div>
-                <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
+                <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 sm:mx-auto sm:flex sm:items-center sm:w-auto sm:space-x-6">
                     <li><div onClick={HomeListener} className={homestyle}>Home</div></li>
                     <li class="text-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                         </svg>
                     </li>
-                    <li><div onClick={GalleryListener} className={gallerystyle}>Gallery</div></li>
+                    <li><div onClick={AboutListener} className={aboutstyle}>About</div></li>
                     <li class="text-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                         </svg>
                     </li>
-                    <li><div onClick={BlogListener} className={blogstyle}>Blogs</div></li>
+                    <li><div onClick={DiseasesListener} className={diseasesstyle}>Diseases</div></li>
                     <li class="text-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                         </svg>
                     </li>
-                    <li><div onClick={EventListener} className={eventstyle}>Events</div></li>
-                    <li class="text-gray-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                        </svg>
-                    </li>
-                    <li><div onClick={MemberListener} className={memberstyle}>Members</div></li>
+                    <li><div onClick={FeedbackListener} className={feedbackstyle}>Feedback</div></li>
                 </ul>
                 {token
                     ? <div className="">

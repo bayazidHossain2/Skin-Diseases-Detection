@@ -5,6 +5,10 @@ import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Signup from "./views/auth/signup";
 import UserPageLayout from "./components/UserPageLayout";
+import Home from "./views/user/Home";
+import About from "./views/user/About";
+import Diseases from "./views/user/Diseases";
+import Feedback from "./views/user/Feedback";
 
 
 const router = createBrowserRouter([
@@ -21,9 +25,29 @@ const router = createBrowserRouter([
     },
 
     {
-        path: '/home',
+        path: '/',
         element: <UserPageLayout />,
-        
+        children: [
+            {
+                path: '/home',
+                element: <Home />
+            },
+
+            {
+                path: '/about',
+                element: <About />
+            },
+
+            {
+                path: '/diseases',
+                element: <Diseases />
+            },
+
+            {
+                path: '/feedback',
+                element: <Feedback />
+            }
+        ]
     },
 
 
