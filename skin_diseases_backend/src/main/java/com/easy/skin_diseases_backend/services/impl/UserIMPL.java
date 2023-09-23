@@ -6,26 +6,16 @@ import com.easy.skin_diseases_backend.repository.UserRepository;
 import com.easy.skin_diseases_backend.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class UserIMPL implements UserServices {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
     @Override
-    @Bean
-    public String addUser(UserDTO userDTO) {
-        User user = new User(
-                userDTO.getUserId(),
-                userDTO.getName(),
-                userDTO.getEmail(),
-                this.passwordEncoder.encode(userDTO.getPassword()),
-                userDTO.getType()
-        );
-
+    public void addUser(User user) {
         userRepository.save(user);
-
-        return user.getName();
     }
 }

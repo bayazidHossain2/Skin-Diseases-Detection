@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 
 public class UserDTO {
 
-    private Long userId;
     private String name;
     private String email;
     private String password;
@@ -13,21 +12,13 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long userId, String name, String email, String password, String type) {
-        this.userId = userId;
+    public UserDTO(String name, String email, String password, String type) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.type = type;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getName() {
         return name;
@@ -64,7 +55,6 @@ public class UserDTO {
     @Override
     public String toString() {
         return "UserDTO{" +
-                "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

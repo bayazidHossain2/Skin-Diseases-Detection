@@ -1,9 +1,9 @@
 package com.easy.skin_diseases_backend.services;
 
 import com.easy.skin_diseases_backend.dto.UserDTO;
-import org.springframework.stereotype.Service;
+import com.easy.skin_diseases_backend.model.User;
 
-@Service
 public interface UserServices {
-    String addUser(UserDTO userDTO);
+
+    void addUser(User user);
 }
