@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom';
 import { useStateContext } from '../../contexts/contextProvider';
+import axiosClient from '../../axios-client';
 
 export default function Signup() {
   const nameRef = useRef();
@@ -11,6 +12,26 @@ export default function Signup() {
 
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const onSignup = () => {
+    const payload = {
+      "name": nameRef.current.value,
+      "email": emailRef.current.value,
+      "dob": DOBRef.current.value,
+      "password": passwordRef.current.value,
+      "role": "user"
+    }
+    console.log(payload);
+
+    axiosClient.post('/user/add',payload)
+      .then(({data}) => {
+        console.log('Success msg is : '+data);
+      })
+      .catch(err => {
+        console.log('err msg : '+err);
+      })
+
+  }
 
 
   return (
@@ -78,7 +99,7 @@ export default function Signup() {
           }
 
           <div className={loading ? " opacity-50 pointer-events-none cursor-default mt-6 text-right" : "mt-6 text-right"}>
-            <div className="bg-orange-700 hover:bg-orange-600 px-5 py-2.5 text-sm leading-5 rounded-md font-semibold text-white">
+            <div onClick={onSignup} className="bg-orange-700 hover:bg-orange-600 px-5 py-2.5 text-sm leading-5 rounded-md font-semibold text-white">
               Sign up
             </div>
           </div>

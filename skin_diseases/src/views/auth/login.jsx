@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
+import axiosClient from '../../axios-client';
 
 export default function Login() {
 
@@ -9,6 +10,22 @@ export default function Login() {
   const [errors, setErrors] = useState(null);
 
 
+  const onLogin = () => {
+    const payload = {
+      "email": emailRef.current.value,
+      "password": passwordRef.current.value,
+    }
+    console.log(payload);
+
+    axiosClient.post('/user/get',payload)
+      .then(({data}) => {
+        console.log('Success msg is : '+data);
+        console.log(data);
+      })
+      .catch(err => {
+        console.log('err msg : '+err);
+      })
+  }
 
   return (
     <div >
@@ -46,7 +63,7 @@ export default function Login() {
             </Link>
           </div>
           <div className="mt-6 text-right">
-            <div className="bg-orange-700 hover:bg-orange-600 px-5 py-2.5 text-sm leading-5 rounded-md font-semibold text-white">
+            <div onClick={onLogin} className="bg-orange-700 hover:bg-orange-600 px-5 py-2.5 text-sm leading-5 rounded-md font-semibold text-white">
               Sign in
             </div>
           </div>

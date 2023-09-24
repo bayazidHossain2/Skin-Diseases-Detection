@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
   error:
     include-message: always
 
@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password:
-    url: jdbc:mysql://localhost:3306/db_skin_diseases
+    url: jdbc:mysql://localhost:3306/skin_diseases_db
 
   jpa:
     hibernate:
