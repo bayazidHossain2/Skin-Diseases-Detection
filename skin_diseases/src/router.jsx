@@ -9,6 +9,7 @@ import Home from "./views/user/Home";
 import About from "./views/user/About";
 import Diseases from "./views/user/Diseases";
 import Feedback from "./views/user/Feedback";
+import Profile from "./views/user/Profile";
 
 
 const router = createBrowserRouter([
@@ -46,7 +47,12 @@ const router = createBrowserRouter([
             {
                 path: '/feedback',
                 element: <Feedback />
-            }
+            },
+
+            {
+                path: '/profile',
+                element: <Profile />
+            },
         ]
     },
 
