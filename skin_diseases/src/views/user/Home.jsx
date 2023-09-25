@@ -11,7 +11,7 @@ export default function Home() {
     const data = new FormData();
     data.append('image', image);
     console.log(data);
-    axiosClient.post('/user/upload', data)
+    axiosClient.post('/image', data)
       .then(() => {
         console.log('profile update success');
         closeBox();
