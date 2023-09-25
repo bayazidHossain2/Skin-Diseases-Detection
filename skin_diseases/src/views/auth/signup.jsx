@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useStateContext } from '../../contexts/contextProvider';
 import axiosClient from '../../axios-client';
 
@@ -12,6 +12,7 @@ export default function Signup() {
 
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onSignup = () => {
     const payload = {
@@ -26,6 +27,8 @@ export default function Signup() {
     axiosClient.post('/user/add',payload)
       .then(({data}) => {
         console.log('Success msg is : '+data);
+        navigate('/login');
+        
       })
       .catch(err => {
         console.log('err msg : '+err);
