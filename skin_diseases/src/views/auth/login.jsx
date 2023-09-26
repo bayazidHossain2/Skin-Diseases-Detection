@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
 import axiosClient from '../../axios-client';
+import { useStateContext } from '../../contexts/contextProvider';
 
 export default function Login() {
 
@@ -8,6 +9,7 @@ export default function Login() {
   const passwordRef = useRef();
 
   const [errors, setErrors] = useState(null);
+  const {setUser, setToken} = useStateContext();
 
 
   const onLogin = () => {
@@ -21,6 +23,14 @@ export default function Login() {
       .then(({data}) => {
         console.log('Success msg is : '+data);
         console.log(data);
+        setUser(data);
+        setToken(data.token);
+        
+        const use = data.user;
+        const tok = data.token;
+        console.log("User and token is : ");
+        console.log(use);
+        console.log(tok);
       })
       .catch(err => {
         console.log('err msg : '+err);

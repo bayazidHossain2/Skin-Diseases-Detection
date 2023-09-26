@@ -14,16 +14,16 @@ export default function UserPageLayout() {
         setBox(false);
     }
     useEffect(() => {
-        axiosClient.get('/user')
+        axiosClient.post('/user',token)
           .then(({ data }) => {
             setUser(data);
             console.log('data added');
           })
       }, [])
 
-    // if (!token) {
-    //     return <Navigate to="/login" />
-    // }
+    if (!token) {
+        return <Navigate to="/login" />
+    }
     //   const { token } = useStateContext()
     //   if (token) {
     //     return <Navigate to="/" />

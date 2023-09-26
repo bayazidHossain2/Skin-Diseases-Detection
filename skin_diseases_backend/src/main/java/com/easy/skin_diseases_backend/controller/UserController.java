@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -24,6 +27,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PostMapping
+    public User user(@RequestBody String token){
+        User user = userService.getUserByToken(token);
+        return user;
+    }
+
     @PostMapping("/add")
     public String addUser(@RequestBody User user){
         userService.addUser(user);
@@ -32,8 +41,17 @@ public class UserController {
 
     @PostMapping("/get")
     public User getUserByEmail(@RequestBody UserCredintialDTO userCredintialDTO){
-        User user = userService.getUserByEmail(userCredintialDTO);
+        String token = UUID.randomUUID().toString()+System.currentTimeMillis();
+        User user = userService.getUserByEmail(userCredintialDTO, token);
+//        user.setPassword("hijibiji");
         return user;
+    }
+
+    @PostMapping("/logout")
+    public String logoutUser(@RequestBody User user){
+        userService.setLogout(user);
+
+        return "Logout Success";
     }
 
 }

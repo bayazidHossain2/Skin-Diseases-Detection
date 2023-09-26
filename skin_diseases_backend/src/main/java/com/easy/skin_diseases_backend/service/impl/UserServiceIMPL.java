@@ -23,9 +23,26 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public User getUserByEmail(UserCredintialDTO userCredintialDTO) {
+    public User getUserByEmail(UserCredintialDTO userCredintialDTO, String token) {
         User user = userRepository.findByEmail(userCredintialDTO.getEmail());
+        if(user == null){
+            return new User();
+        }
+        user.setToken(token);
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        User user = userRepository.findByToken(token);
 
         return user;
+    }
+
+    @Override
+    public void setLogout(User user) {
+        user.setToken(null);
+        userRepository.save(user);
     }
 }

@@ -13,8 +13,11 @@ export default function GuestLayout() {
     setBox(false);
   }
 
-  const { token } = useStateContext()
+  const { user, token } = useStateContext()
   if (token) {
+    if(user.role == 'admin'){
+      return <Navigate to="/" />
+    }
     return <Navigate to="/home" />
   }
 

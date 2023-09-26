@@ -19,7 +19,7 @@ axiosClient.interceptors.response.use((response) => {
 }, (error) => {
     try {
         const { response } = error;
-        console.log("error is : : : "+error);
+        console.log("Client error is : "+error);
         if (response && response.status === 401) {
             localStorage.removeItem('SD_ACCESS_TOKEN')
         }

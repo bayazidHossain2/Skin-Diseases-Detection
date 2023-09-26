@@ -21,11 +21,13 @@ export default function Header() {
         console.log(user);
         console.log(token);
 
-        setUser({})
-        setToken(null)
-        axiosClient.post('/logout')
-            .then(() => {
-                console.log('logout Success');
+
+        axiosClient.post('/user/logout',user)
+            .then(({data}) => {
+                console.log(data);
+                setUser({})
+                setToken(null)
+                // console.log('logout Success');
             })
             .catch(err => {
                 response = err.response;
@@ -63,7 +65,7 @@ export default function Header() {
         setFeedbackstyle(select);
         navigate('/feedback');
     }
-    
+
     const ProfileListener = () => {
         setHomestyle(disSelect);
         setAboutstyle(disSelect);

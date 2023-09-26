@@ -10,6 +10,10 @@ import About from "./views/user/About";
 import Diseases from "./views/user/Diseases";
 import Feedback from "./views/user/Feedback";
 import Profile from "./views/user/Profile";
+import AdminDashbord from "./views/admin/adminDashbord";
+import AdminUsers from "./views/admin/AdminUsers";
+import AdminFeedback from "./views/admin/AdminFeedback";
+import Content from "./views/admin/Content";
 
 
 const router = createBrowserRouter([
@@ -22,7 +26,25 @@ const router = createBrowserRouter([
     // },
     {
         path: '/',
-        element: <DefaultLayout/>
+        element: <DefaultLayout/>,
+        children: [
+            {
+                path: '/admin-dashbord',
+                element: <AdminDashbord />
+            },
+            {
+                path: '/admin-alluser',
+                element: <AdminUsers />
+            },
+            {
+                path: '/admin-feedback',
+                element: <AdminFeedback />
+            },
+            {
+                path: '/admin-contents',
+                element: <Content />
+            }
+        ]
     },
 
     {
