@@ -5,7 +5,9 @@ import com.easy.skin_diseases_backend.model.User;
 import com.easy.skin_diseases_backend.repository.UserRepository;
 import com.easy.skin_diseases_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
@@ -44,5 +46,24 @@ public class UserServiceIMPL implements UserService {
     public void setLogout(User user) {
         user.setToken(null);
         userRepository.save(user);
+    }
+
+    @Override
+    public void updateProfile(User user) {
+        user.setProfileUrl("Url is set");
+        userRepository.save(user);
+    }
+
+    @Override
+    public User updateUserProfile(Long id, String path) {
+        //check Weather the user is in database or not
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid user id "+id));
+
+//        deleteUser(id);
+        user.setProfileUrl(path);
+        userRepository.save(user);
+        return user;
     }
 }

@@ -1,8 +1,41 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
+import axiosClient from '../../axios-client';
+import avater from '/avater.webp'
+import { useStateContext } from '../../contexts/contextProvider';
+
 
 export default function Profile() {
     const [type, setType] = useState(false);
+    const { user, setUser } = useStateContext();
+    const [imgBox, setimgBox] = useState(false);
+    const [image, setImage] = useState();
 
+
+    const updateProfile = () => {
+
+        // axiosClient.post('/user/update-profile/1', "hejibiji")
+        //             .then(() => {
+        //                 console.log('User profile upload success');
+        //             })
+
+        const data = new FormData();
+        data.append('image', image);
+        console.log(data);
+        axiosClient.post('/image/profile', data)
+            .then(({ data }) => {
+                console.log('profile update success');
+                console.log(data);
+
+                axiosClient.post('/user/update-profile/' + user.id, data)
+                    .then(({ data }) => {
+                        console.log('User profile upload success');
+                        console.log(data);
+                        setUser(data);
+                    })
+                // closeBox();
+                // navigate('/profile')
+            })
+    }
     return (
         <div className="relative">
 
@@ -11,17 +44,13 @@ export default function Profile() {
                     <div className="flex flex-row justify-between">
                         {/* Name Details */}
                         <div className="flex flex-col mt-6">
-                            <h2 className='text-3xl font-bold'>Name</h2>
-                            <h2 className='text-xl font-semibold'>Department of </h2>
-                            <h2 className='text-xl'>Pabna Universiry of Science and Technology</h2>
+                            <h2 className='text-3xl font-bold'>{user.name}</h2>
+                            <h2 className='text-xl font-semibold'>{user.dob} </h2>
                             <button className=' self-start bg-blue-900 text-white px-2 py-1 rounded-md text-xl mt-2'>Edit</button>
                         </div>
                         {/* Profile image */}
                         <div className=" border-4 border-blue-600 self-center rounded-xl">
-                            {/* {user.profile_image ?
-                                <img onClick={onImg} src={"http://localhost:8000/image/profile/" + user.profile_image} className='h-40 w-40 rounded-xl p-1' />
-                                : <img onClick={onImg} src={avater} className='h-40 w-40 rounded-xl p-1' />
-                            } */}
+                            <img onClick={(ev) => { ev.preventDefault(); setimgBox(true); setType('Update Profile') }} src={user.profileUrl ? 'http://localhost:8081/image/profile?link=' + user.profileUrl : avater} className='h-40 w-40 rounded-xl p-1' />
                         </div>
                     </div>
                     <h2 className='text-xl mt-10 font-bold'>Skills</h2>
@@ -88,28 +117,34 @@ export default function Profile() {
                 <div className="flex flex-col">
                     <div className="flex flex-row mb-4 justify-between">
                         <h2 className=' text-2xl font-bold text-blue-900'>{type}</h2>
-                        <button className=' bg-slate-800 rounded-md text-white px-3'>Close</button>
+                        <button onClick={(ev) => {ev.preventDefault(); setType(null)}} className=' bg-slate-800 rounded-md text-white px-3'>Close</button>
                     </div>
                     {/* Content */}
-                    {false ?
-                        // Edit Name 
+                    {imgBox ?
+                        // Edit Image 
                         <div className="flex flex-col space-y-2">
+                            <img src="" alt="" />
+                            {user.profileUrl ?
+                                <div className="flex flex-row justify-center ">
+                                    <img onClick={(ev) => { ev.preventDefault(); setimgBox(true); setType('Update Profile') }} src={user.profileUrl ? 'http://localhost:8081/image/profile?link=' + user.profileUrl : avater} className='max-h-80 border-4 border-blue-300 rounded-sm ' />
+                                </div>
+                                :
+                                <div className="flex flex-row w-[50%] bg-pink-200 p-10 h-80 self-center rounded-xl border-4 border-pink-600">
+                                    <h3 className='text-xl text-center self-center'>You don't set any image to your profile yet.</h3>
+                                </div>
+                            }
                             <div className="flex flex-col">
-                                <h3 className='text-xl text-blue-900 font-semibold'>Name:</h3>
-                                {/* <input value={name} onChange={ev => setName(ev.target.value)} className='text-lg px-2 py-2 border-2 border-blue-900 rounded-xl text-black' type="text" /> */}
+                                <h3 className='text-xl text-blue-900 font-semibold'>Upload a image</h3>
+                                <input onChange={(ev) => {
+                                    setImage(ev.target.files[0]);
+                                    console.log(ev.target.files[0])
+                                }} className='text-lg px-2 py-2 border-2 border-blue-900 rounded-xl text-black' type="file" />
                             </div>
-                            <div className="flex flex-col">
-                                <h3 className='text-xl text-blue-900 font-semibold'>Department:</h3>
-                                {/* <input value={dept} onChange={ev => setDept(ev.target.value)} className='text-lg px-2 py-2 border-2 border-blue-900 rounded-xl text-black' type="text" /> */}
-                            </div>
-                            <button className='w-28 py-2 self-end font-bold bg-green-600 rounded-md text-white px-3'>Save</button>
+                            <button onClick={updateProfile} className='w-28 py-2 self-end font-bold bg-green-600 rounded-md text-white px-3'>Save</button>
 
                         </div>
-
                         :
-                        <div className="">
-
-                        </div>
+                        <div className=""></div>
 
                     }
                 </div>

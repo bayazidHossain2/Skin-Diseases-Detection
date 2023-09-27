@@ -1,6 +1,8 @@
 package com.easy.skin_diseases_backend.service;
 
+import com.easy.skin_diseases_backend.model.Image;
 import com.easy.skin_diseases_backend.model.ImageData;
+import com.easy.skin_diseases_backend.repository.ImageRepository;
 import com.easy.skin_diseases_backend.repository.StorageRepository;
 import com.easy.skin_diseases_backend.util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class StorageService {
 
     @Autowired
     private StorageRepository repository;
+    @Autowired
+    private ImageRepository imgRepo;
 
     public String uploadImage(MultipartFile file) throws IOException {
         try{
@@ -39,5 +43,9 @@ public class StorageService {
         Optional<ImageData> dbImageData =  repository.findByName(fileName);
         byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
         return images;
+    }
+
+    public void saveImage(Image image) {
+        imgRepo.save(image);
     }
 }

@@ -11,4 +11,8 @@ public interface UserService {
     User getUserByToken(String token);
 
     void setLogout(User user);
+
+    void updateProfile(User user);
+
+    User updateUserProfile(Long id, String path);
 }

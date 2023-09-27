@@ -47,10 +47,16 @@ public class UserController {
         return user;
     }
 
+    @PostMapping("/update-profile/{id}")
+    public ResponseEntity<?> updateUserProfile(@PathVariable Long id, @RequestBody String path){
+        User user = userService.updateUserProfile(id, path);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(user);
+    }
+
     @PostMapping("/logout")
     public String logoutUser(@RequestBody User user){
         userService.setLogout(user);
-
         return "Logout Success";
     }
 
