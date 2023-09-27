@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 
 @Service
 public class UserServiceIMPL implements UserService {
@@ -65,5 +67,10 @@ public class UserServiceIMPL implements UserService {
         user.setProfileUrl(path);
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

@@ -3,6 +3,7 @@ package com.easy.skin_diseases_backend.controller;
 
 import com.easy.skin_diseases_backend.dto.UserCredintialDTO;
 import com.easy.skin_diseases_backend.model.User;
+import com.easy.skin_diseases_backend.model.WebsiteContent;
 import com.easy.skin_diseases_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -58,6 +60,11 @@ public class UserController {
     public String logoutUser(@RequestBody User user){
         userService.setLogout(user);
         return "Logout Success";
+    }
+
+    @GetMapping("/all")
+    public List<User> getAllUsers(){
+        return userService.getAllUsers();
     }
 
 }
