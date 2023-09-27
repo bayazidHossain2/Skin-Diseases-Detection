@@ -130,7 +130,7 @@ export default function DefaultLayout() {
         </div>
         {/* ./Sidebar  */}
 
-        <div class=" bg-red-800 p-2 m-4 h-full ml-14 mt-14 mb-10 md:ml-64">
+        <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
           <Outlet />
         </div>
       </div>

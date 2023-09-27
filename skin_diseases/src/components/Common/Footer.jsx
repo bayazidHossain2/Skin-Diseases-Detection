@@ -1,6 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axiosClient from '../../axios-client';
 
 export default function Footer() {
+    const [aboutShort, setAboutShort] = useState(); 
+
+    useEffect(() => {
+        axiosClient.get('/content/get?uniqueName=aboutShort')
+          .then(({ data }) => {
+            // setUser(data);
+            console.log('data added');
+            console.log(data);
+            setAboutShort(data);
+          })
+      }, [])
     return (
         <div>
             <footer class="bg-orange-100">
@@ -24,7 +36,7 @@ export default function Footer() {
                         <div className="flex flex-col">
                             <h2 className='text-2xl font-bold self-center'>About US</h2>
                             <p class="mt-4 max-w-xs text-justify text-gray-500">
-                                about text
+                                {aboutShort&&aboutShort.content}
                             </p>
                         </div>
                         <div className="flex flex-col my-8">
