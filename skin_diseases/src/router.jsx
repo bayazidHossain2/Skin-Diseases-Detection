@@ -14,6 +14,7 @@ import AdminDashbord from "./views/admin/adminDashbord";
 import AdminUsers from "./views/admin/AdminUsers";
 import AdminFeedback from "./views/admin/AdminFeedback";
 import Content from "./views/admin/Content";
+import AdminDiseases from "./views/admin/AdminDiseases";
 
 
 const router = createBrowserRouter([
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 path: '/admin-contents',
                 element: <Content />
+            },
+            {
+                path: '/admin-diseases',
+                element: <AdminDiseases />
             }
         ]
     },
