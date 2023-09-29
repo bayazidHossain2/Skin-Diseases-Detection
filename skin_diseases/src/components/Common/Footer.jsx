@@ -10,7 +10,7 @@ export default function Footer() {
             // setUser(data);
             console.log('data added');
             console.log(data);
-            setAboutShort(data);
+            setAboutShort(data[0]);
           })
       }, [])
     return (

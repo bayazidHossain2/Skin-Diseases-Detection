@@ -12,15 +12,15 @@ export default function About() {
   useEffect(() => {
     axiosClient.get('/content/get?uniqueName=aboutLong')
       .then(({ data }) => {
-        setAboutLong(data);
+        setAboutLong(data[0]);
       })
     axiosClient.get('/content/get?uniqueName=mission')
       .then(({ data }) => {
-        setMission(data);
+        setMission(data[0]);
       })
     axiosClient.get('/content/get?uniqueName=vision')
       .then(({ data }) => {
-        setVision(data);
+        setVision(data[0]);
       })
 
 

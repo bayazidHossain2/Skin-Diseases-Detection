@@ -9,6 +9,9 @@ export default function Profile() {
     const { user, setUser } = useStateContext();
     const [imgBox, setimgBox] = useState(false);
     const [image, setImage] = useState();
+    const [researchBox, setResearchBox] = useState(true);
+    const [paymentMethod, setPaymentMethod] = useState();
+    const [paymentText, setPaymentText] = useState();
 
 
     const updateProfile = () => {
@@ -37,6 +40,23 @@ export default function Profile() {
             })
 
     }
+    const onResearch = () => {
+        setResearchBox(true);
+        setimgBox(false);
+        setType('Research Search Time ')
+        axiosClient.get('/content/get?uniqueName=paymentMethod')
+            .then(({ data }) => {
+                // setVision(data[0]);
+                console.log(data);
+                setPaymentMethod(data);
+            })
+        axiosClient.get('/content/get?uniqueName=paymentDiscribe')
+            .then(({ data }) => {
+                // setVision(data[0]);
+                console.log(data);
+                setPaymentText(data[0]);
+            })
+    }
     return (
         <div className="relative">
 
@@ -53,7 +73,7 @@ export default function Profile() {
                                 <h2 className={(user.availableSearch >= 3) ? 'text-2xl font-bold text-green-600' : 'text-2xl font-bold text-red-600'} >{user.availableSearch} times</h2>
 
                             </div>
-                            <button className=' bg-orange-600 mt-2 px-4 py-2 rounded-md text-white self-start'>Research Now</button>
+                            <button onClick={onResearch} className=' bg-orange-600 mt-2 px-4 py-2 rounded-md text-white self-start'>Research Now</button>
                             {/* <button className=' self-start bg-blue-900 text-white px-2 py-1 rounded-md text-xl mt-2'>Edit</button> */}
                         </div>
                         {/* Profile image */}
@@ -173,9 +193,6 @@ export default function Profile() {
                                 <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete Feedback</button>
                             </div>
                         </div>
-
-
-
                     </div>
 
                 </div>
@@ -213,7 +230,42 @@ export default function Profile() {
 
                         </div>
                         :
-                        <div className=""></div>
+                        researchBox ?
+                            <div className="">
+                                {paymentMethod &&
+                                    paymentMethod.map(method => (
+                                        <div className="flex flex-row space-x-4 text-xl font-semibold text-black">
+                                            <h3>{method.title} : </h3>
+                                            <h4>{method.content}</h4>
+                                        </div>
+                                    ))
+
+                                }
+                                <div className="my-5">
+                                    <h2 className='text-xl font-semibold'>{paymentText && paymentText.title} </h2>
+                                    <p>
+                                        {paymentText && paymentText.content}
+                                    </p>
+                                </div>
+                                <div className="flex flex-row space-x-4">
+                                    <div class="flex flex-col w-full">
+                                        <label class="font-bold">Token: </label>
+                                        <div className="flex flex-row w-3/4 space-x-4">
+                                            <input type="text"  class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
+                                            <input type="text"  class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
+                                            <input type="text"  class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
+                                            <input type="text"  class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
+
+                                        </div>
+                                    </div>
+                                    <div className="flex">
+                                        <button className=' self-end bg-orange-800 px-4 py-3 rounded-xl font-bold text-white '>Submit</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                            :
+                            <div className=""></div>
 
                     }
                 </div>

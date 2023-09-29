@@ -15,6 +15,7 @@ import AdminUsers from "./views/admin/AdminUsers";
 import AdminFeedback from "./views/admin/AdminFeedback";
 import Content from "./views/admin/Content";
 import AdminDiseases from "./views/admin/AdminDiseases";
+import AdminTokens from "./views/admin/AdminTokens";
 
 
 const router = createBrowserRouter([
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path: '/admin-contents',
                 element: <Content />
+            },
+            {
+                path: '/admin-tokens',
+                element: <AdminTokens />
             },
             {
                 path: '/admin-diseases',

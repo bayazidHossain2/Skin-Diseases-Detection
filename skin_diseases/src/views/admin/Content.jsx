@@ -16,13 +16,17 @@ export default function Content() {
   const [contents, setContents] = useState();
 
   useEffect(() => {
+    getallContent();
+  }, [])
+
+  const getallContent = () => {
     axiosClient.get('/content/all')
       .then(({ data }) => {
         setContents(data);
         console.log('data added');
         console.log(data);
       })
-  }, [])
+  }
 
   const onSubmit = () => {
     console.log("Submit Click");
@@ -44,18 +48,23 @@ export default function Content() {
     }
     console.log(payload);
     if (edit) {
+      payload.id = contentId;
+      console.log(payload);
       axiosClient.post('/content/edit', payload)
         .then(({ data }) => {
           console.log('data : ' + data);
-          setSuccess('Your content successfully added to database.');
+          setSuccess('Your content successfully updated to database.');
+          getallContent();
         })
-    }else{
+    } else {
       axiosClient.post('/content/add', payload)
-      .then(({ data }) => {
-        console.log('data : ' + data);
-        setSuccess('Your content successfully added to database.');
-      })
+        .then(({ data }) => {
+          console.log('data : ' + data);
+          setSuccess('Your content successfully added to database.');
+          getallContent();
+        })
     }
+    
   }
   const onEdit = (content) => {
     setError('');
@@ -68,8 +77,14 @@ export default function Content() {
     console.log(content.id);
     console.log("Edit");
   }
-  const onDelete = () => {
+  const onDelete = (id) => {
     console.log("Delet");
+    axiosClient.delete('/content/delete/' + id)
+      .then(({ data }) => {
+        console.log(data);
+        setSuccess('Successfully Delete the contents');
+        getallContent();
+      })
   }
 
 
@@ -95,7 +110,7 @@ export default function Content() {
             <div className="w-full lg:w-1/2">
               <div class="flex flex-col w-full">
                 <label class="font-bold">Unique Title: </label>
-                <input value={unique} onChange={(event) => { event.preventDefault(); if (edit) { setError('You can not change the unique title.') } else { setUnique(event.target.value); } console.log('change') }} type="text" placeholder="Write unique Title.." class="w-100 mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 dark:text-gray-50 font-semibold focus:border-blue-500 focus:outline-none" />
+                <input value={unique} onChange={(event) => { event.preventDefault(); if (edit) { setError('You can not change the unique title.') } else { setUnique(event.target.value); } }} type="text" placeholder="Write unique Title.." class="w-100 mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 dark:text-gray-50 font-semibold focus:border-blue-500 focus:outline-none" />
               </div>
 
               <div class="flex flex-col mt-2">
@@ -131,7 +146,7 @@ export default function Content() {
 
               <div className="flex flex-row space-x-2 self-end">
                 <button onClick={(ev) => { ev.preventDefault(); onEdit(content) }} type="submit" className="md:w-32 bg-blue-900 dark:bg-gray-100 text-white font-bold py-3 px-6 rounded-lg mt-4 hover:bg-blue-700 dark:hover:bg-gray-200 transition ease-in-out duration-300">Edit</button>
-                <button onClick={onDelete} type="submit" className="md:w-32 bg-red-900 dark:bg-gray-100 text-white font-bold py-3 px-6 rounded-lg mt-4 hover:bg-red-700 dark:hover:bg-gray-200 transition ease-in-out duration-300">Dekete</button>
+                <button onClick={(ev) => { ev.preventDefault(); onDelete(content.id) }} type="submit" className="md:w-32 bg-red-900 dark:bg-gray-100 text-white font-bold py-3 px-6 rounded-lg mt-4 hover:bg-red-700 dark:hover:bg-gray-200 transition ease-in-out duration-300">Dekete</button>
               </div>
             </div>
           </div>

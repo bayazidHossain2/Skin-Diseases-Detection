@@ -28,11 +28,13 @@ public class ContentServiceIMPL implements ContentService {
     }
 
     @Override
-    public WebsiteContent getContent(String uniqueName) {
-        WebsiteContent content = repository
-                .findByUniqueTitle(uniqueName)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid unique title "+uniqueName));
+    public List<WebsiteContent> getContent(String uniqueName) {
+        return repository
+                .findByUniqueTitle(uniqueName);
+    }
 
-        return content;
+    @Override
+    public void deleteContent(Long id) {
+        repository.deleteById(id);
     }
 }

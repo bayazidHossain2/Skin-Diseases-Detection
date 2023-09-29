@@ -11,5 +11,7 @@ public interface ContentService {
 
     List<WebsiteContent> getAllContents();
 
-    WebsiteContent getContent(String uniqueName);
+    List<WebsiteContent> getContent(String uniqueName);
+
+    void deleteContent(Long id);
 }
