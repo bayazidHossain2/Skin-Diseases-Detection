@@ -36,14 +36,14 @@ export default function AdminUsers() {
                   </div>
                 </div>
                 <div className="flex flex-row space-x-2 mt-5 justify-between items-center">
-                  <div className="flex flex-row items-center space-x-2">
+                  <div className="flex flex-row w-3/4 items-center space-x-2">
                     <h3 className='text-lg font-semibold'>Role : </h3>
                     <p>{user.role}</p>
                   </div>
-                  <button className='bg-blue-800 px-2 py-1 rounded-lg text-white font-semibold'>Make Admin</button>
+                  <button className='bg-blue-800 w-1/4 px-2 py-1 rounded-lg text-white font-semibold'>Make Admin</button>
                 </div>
                 <div className="flex flex-row space-x-2 mt-5 justify-between items-center">
-                  <div className="flex flex-row items-center space-x-4">
+                  <div className="flex flex-row w-3/4 items-center space-x-4">
                     <h3 className='text-lg w-1/4 font-semibold'>Token: </h3>
                     <p>{user.token ? user.token : 'User not actiove.'}</p>
                   </div>

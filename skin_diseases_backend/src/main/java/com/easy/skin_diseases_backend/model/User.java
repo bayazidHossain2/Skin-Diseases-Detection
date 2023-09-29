@@ -32,6 +32,15 @@ public class User {
     @Column(name = "rememberToken", length = 256)
     private String token;
 
+    private Long availableSearch;
+
+    public Long getAvailableSearch() {
+        return availableSearch;
+    }
+
+    public void setAvailableSearch(Long availableSearch) {
+        this.availableSearch = availableSearch;
+    }
 
     public Long getId() {
         return id;

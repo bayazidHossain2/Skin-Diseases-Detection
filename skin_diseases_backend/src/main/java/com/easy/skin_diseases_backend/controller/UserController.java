@@ -2,12 +2,15 @@ package com.easy.skin_diseases_backend.controller;
 
 
 import com.easy.skin_diseases_backend.dto.UserCredintialDTO;
+import com.easy.skin_diseases_backend.dto.UserProfileDTO;
+import com.easy.skin_diseases_backend.model.Image;
 import com.easy.skin_diseases_backend.model.User;
 import com.easy.skin_diseases_backend.model.WebsiteContent;
 import com.easy.skin_diseases_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,11 +45,14 @@ public class UserController {
     }
 
     @PostMapping("/get")
-    public User getUserByEmail(@RequestBody UserCredintialDTO userCredintialDTO){
+    public ResponseEntity<?> getUserByEmail(@RequestBody UserCredintialDTO userCredintialDTO){
         String token = UUID.randomUUID().toString()+System.currentTimeMillis();
         User user = userService.getUserByEmail(userCredintialDTO, token);
 //        user.setPassword("hijibiji");
-        return user;
+        if(user.getPassword().equals(userCredintialDTO.getPassword())){
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Email or Password are not matched.");
     }
 
     @PostMapping("/update-profile/{id}")
@@ -65,6 +71,11 @@ public class UserController {
     @GetMapping("/all")
     public List<User> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<String> getCount(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getCount());
     }
 
 }

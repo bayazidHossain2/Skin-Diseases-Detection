@@ -1,81 +1,117 @@
+import avater from '/avater.webp'
 import React from 'react'
 
 export default function AdminFeedback() {
     return (
         <div>
             {/* Recent Activities  */}
-            <div class="relative flex flex-col min-w-0 break-words p-4 min-h-screen bg-slate-200 w-full shadow-lg rounded">
-                <div class="rounded-t mb-0 px-0 border-0">
-                    <div class="flex flex-wrap items-center px-4 py-2">
-                        <div class="relative w-full max-w-full flex-grow flex-1">
-                            <h3 class="font-semibold text-base text-gray-900 ">Recent Activities</h3>
+            <div className="grid grid-cols-1 m-10 gap-2 md:gap-4 lg:gap-8 md:grid-cols-2">
+                <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
+                    <div className="flex flex-col space-x-4 lg:flex-row">
+                        {/* Image */}
+                        <div className="flex flex-row justify-center ">
+                            <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[20vh] border-4 border-blue-800 rounded-lg' />
                         </div>
-                        <div class="relative w-full max-w-full flex-grow flex-1 text-right">
-                            <button class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">See all</button>
+                        {/* Result show section */}
+                        <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
+                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
+                                <h2 className=' text-2xl font-semibold'>Diseas</h2>
+                            </div>
+                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                <h2 className=' text-2xl font-bold'>With Confidence : </h2>
+                                <h2 className=' text-2xl font-semibold'>78%</h2>
+                            </div>
                         </div>
+
                     </div>
-                    <div class="block w-full">
-                        <div class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            Today
+                    {/* Feedback Section */}
+                    <div className="flex flex-col mt-4">
+                        <p className=' p-2 w-full border-2 border-blue-700 rounded-lg'>
+                            feedback
+                        </p>
+                        <button className=' bg-red-500 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete</button>
+                    </div>
+                </div>
+                <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
+                    <div className="flex flex-col space-x-4 lg:flex-row">
+                        {/* Image */}
+                        <div className="flex flex-row justify-center ">
+                            <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
                         </div>
-                        <ul class="my-1">
-                            <li class="flex px-4">
-                                <div class="w-9 h-9 rounded-full flex-shrink-0 bg-indigo-500 my-2 mr-3">
-                                    <svg class="w-9 h-9 fill-current text-indigo-50" viewBox="0 0 36 36"><path d="M18 10c-4.4 0-8 3.1-8 7s3.6 7 8 7h.6l5.4 2v-4.4c1.2-1.2 2-2.8 2-4.6 0-3.9-3.6-7-8-7zm4 10.8v2.3L18.9 22H18c-3.3 0-6-2.2-6-5s2.7-5 6-5 6 2.2 6 5c0 2.2-2 3.8-2 3.8z"></path></svg>
-                                </div>
-                                <div class="flex-grow flex items-center border-b border-gray-100 dark:border-gray-400 text-sm text-gray-600 dark:text-gray-100 py-2">
-                                    <div class="flex-grow flex justify-between items-center">
-                                        <div class="self-center">
-                                            <a class="font-medium text-gray-800 outline-none hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100" href="#0" >Nick Mark</a> mentioned <a class="font-medium text-gray-800 outline-none dark:text-gray-50 dark:hover:text-gray-100" href="#0" >Sara Smith</a> in a new post
-                                        </div>
-                                        <div class="flex-shrink-0 ml-2">
-                                            <a class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500 outline-none" href="#0" >
-                                                View<span><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" class="transform transition-transform duration-500 ease-in-out"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="flex px-4">
-                                <div class="w-9 h-9 rounded-full flex-shrink-0 bg-red-500 my-2 mr-3">
-                                    <svg class="w-9 h-9 fill-current text-red-50" viewBox="0 0 36 36"><path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z"></path></svg>
-                                </div>
-                                <div class="flex-grow flex items-center border-gray-100 text-sm text-gray-600 dark:text-gray-50 py-2">
-                                    <div class="flex-grow flex justify-between items-center">
-                                        <div class="self-center">
-                                            The post <a class="font-medium text-gray-800 outline-none dark:text-gray-50 dark:hover:text-gray-100" href="#0" >Post Name</a> was removed by <a class="font-medium text-gray-800 hover:text-gray-900 outline-none dark:text-gray-50 dark:hover:text-gray-100" href="#0">Nick Mark</a>
-                                        </div>
-                                        <div class="flex-shrink-0 ml-2">
-                                            <a class="flex items-center font-medium outline-none text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500" href="#0">
-                                                View<span><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" class="transform transition-transform duration-500 ease-in-out"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            Yesterday
+                        {/* Result show section */}
+                        <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
+                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
+                                <h2 className=' text-2xl font-semibold'>Diseas</h2>
+                            </div>
+                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                <h2 className=' text-2xl font-bold'>With Confidence : </h2>
+                                <h2 className=' text-2xl font-semibold'>78%</h2>
+                            </div>
                         </div>
-                        <ul class="my-1">
-                            <li class="flex px-4">
-                                <div class="w-9 h-9 rounded-full flex-shrink-0 bg-green-500 my-2 mr-3">
-                                    <svg class="w-9 h-9 fill-current text-light-blue-50" viewBox="0 0 36 36"><path d="M23 11v2.085c-2.841.401-4.41 2.462-5.8 4.315-1.449 1.932-2.7 3.6-5.2 3.6h-1v2h1c3.5 0 5.253-2.338 6.8-4.4 1.449-1.932 2.7-3.6 5.2-3.6h3l-4-4zM15.406 16.455c.066-.087.125-.162.194-.254.314-.419.656-.872 1.033-1.33C15.475 13.802 14.038 13 12 13h-1v2h1c1.471 0 2.505.586 3.406 1.455zM24 21c-1.471 0-2.505-.586-3.406-1.455-.066.087-.125.162-.194.254-.316.422-.656.873-1.028 1.328.959.878 2.108 1.573 3.628 1.788V25l4-4h-3z"></path></svg>
-                                </div>
-                                <div class="flex-grow flex items-center border-gray-100 text-sm text-gray-600 dark:text-gray-50 py-2">
-                                    <div class="flex-grow flex justify-between items-center">
-                                        <div class="self-center">
-                                            <a class="font-medium text-gray-800 hover:text-gray-900 outline-none dark:text-gray-50 dark:hover:text-gray-100" href="#0">240+</a> users have subscribed to <a class="font-medium text-gray-800 dark:text-gray-50 dark:hover:text-gray-100 outline-none" href="#0">Newsletter #1</a>
-                                        </div>
-                                        <div class="flex-shrink-0 ml-2">
-                                            <a class="flex items-center font-medium outline-none text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500" href="#0">
-                                                View<span><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" class="transform transition-transform duration-500 ease-in-out"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+
+                    </div>
+                    {/* Feedback Section */}
+                    <div className="flex flex-col mt-4">
+                        <p className=' p-2 w-full border-2 border-orange-600 rounded-lg'>
+                            feedback
+                        </p>
+                        <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete Feedback</button>
+                    </div>
+                </div>
+                <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
+                    <div className="flex flex-col space-x-4 lg:flex-row">
+                        {/* Image */}
+                        <div className="flex flex-row justify-center ">
+                            <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
+                        </div>
+                        {/* Result show section */}
+                        <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
+                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
+                                <h2 className=' text-2xl font-semibold'>Diseas</h2>
+                            </div>
+                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                <h2 className=' text-2xl font-bold'>With Confidence : </h2>
+                                <h2 className=' text-2xl font-semibold'>78%</h2>
+                            </div>
+                        </div>
+
+                    </div>
+                    {/* Feedback Section */}
+                    <div className="flex flex-col mt-4">
+                        <p className=' p-2 w-full border-2 border-orange-600 rounded-lg'>
+                            feedback
+                        </p>
+                        <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete Feedback</button>
+                    </div>
+                </div>
+                <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
+                    <div className="flex flex-col space-x-4 lg:flex-row">
+                        {/* Image */}
+                        <div className="flex flex-row justify-center ">
+                            <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
+                        </div>
+                        {/* Result show section */}
+                        <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
+                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
+                                <h2 className=' text-2xl font-semibold'>Diseas</h2>
+                            </div>
+                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                <h2 className=' text-2xl font-bold'>With Confidence : </h2>
+                                <h2 className=' text-2xl font-semibold'>78%</h2>
+                            </div>
+                        </div>
+
+                    </div>
+                    {/* Feedback Section */}
+                    <div className="flex flex-col mt-4">
+                        <p className=' p-2 w-full border-2 border-orange-600 rounded-lg'>
+                            feedback
+                        </p>
+                        <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete Feedback</button>
                     </div>
                 </div>
             </div>

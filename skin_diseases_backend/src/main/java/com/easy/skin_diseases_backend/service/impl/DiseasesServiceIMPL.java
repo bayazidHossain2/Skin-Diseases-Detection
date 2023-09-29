@@ -24,4 +24,9 @@ public class DiseasesServiceIMPL implements DiseasesService {
     public List<Diseases> getAllDiseases() {
         return diseasesRepository.findAll();
     }
+
+    @Override
+    public String getCount() {
+        return ""+diseasesRepository.count();
+    }
 }

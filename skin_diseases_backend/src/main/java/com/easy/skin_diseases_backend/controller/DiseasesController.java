@@ -21,15 +21,15 @@ public class DiseasesController {
     public List<Diseases> getAllDiseases(){
         return diseasesService.getAllDiseases();
     }
-//
-//    @GetMapping("/get")
-//    public WebsiteContent getUser(@RequestParam String uniqueName){
-//        return service.getContent(uniqueName);
-//    }
 
     @PostMapping("/add")
     public ResponseEntity<String> addContent(@RequestBody Diseases diseases){
         diseasesService.addDiseases(diseases);
         return ResponseEntity.status(HttpStatus.OK).body("Success add Content.");
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<String> getCount(){
+        return ResponseEntity.status(HttpStatus.OK).body(diseasesService.getCount());
     }
 }

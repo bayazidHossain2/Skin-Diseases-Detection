@@ -8,4 +8,6 @@ public interface DiseasesService {
     void addDiseases(Diseases diseases);
 
     List<Diseases> getAllDiseases();
+
+    String getCount();
 }

@@ -19,4 +19,6 @@ public interface UserService {
     User updateUserProfile(Long id, String path);
 
     List<User> getAllUsers();
+
+    String getCount();
 }

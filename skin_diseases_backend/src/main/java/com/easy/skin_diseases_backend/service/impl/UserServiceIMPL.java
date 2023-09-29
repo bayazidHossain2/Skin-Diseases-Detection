@@ -23,6 +23,7 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public void addUser(User user) {
+        user.setAvailableSearch(3L);
         userRepository.save(user);
     }
 
@@ -72,5 +73,10 @@ public class UserServiceIMPL implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public String getCount() {
+        return ""+userRepository.count();
     }
 }

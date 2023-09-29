@@ -27,7 +27,7 @@ export default function About() {
   }, [])
   return (
     <div>
-      <section class="w-[98%] mx-auto bg-orange-600 border-2 pt-5 pb-5 mb-2">
+      <section class="w-[98%] mx-auto min-h-screen bg-orange-600 border-2 pt-5 pb-5 mb-2">
         <h2 class="w-[50%] mx-auto text-slate-900 font-Caveat font-semibold text-center text-3xl">About Us
         </h2>
         {/* About Text */}

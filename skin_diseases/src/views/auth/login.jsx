@@ -8,24 +8,25 @@ export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const [errors, setErrors] = useState(null);
-  const {setUser, setToken} = useStateContext();
+  const [error, setError] = useState(null);
+  const { setUser, setToken } = useStateContext();
 
 
   const onLogin = () => {
+    setError('');
     const payload = {
       "email": emailRef.current.value,
       "password": passwordRef.current.value,
     }
     console.log(payload);
 
-    axiosClient.post('/user/get',payload)
-      .then(({data}) => {
-        console.log('Success msg is : '+data);
+    axiosClient.post('/user/get', payload)
+      .then(({ data }) => {
+        console.log('Success msg is : ' + data);
         console.log(data);
         setUser(data);
         setToken(data.token);
-        
+
         const use = data.user;
         const tok = data.token;
         console.log("User and token is : ");
@@ -33,21 +34,22 @@ export default function Login() {
         console.log(tok);
       })
       .catch(err => {
-        console.log('err msg : '+err);
+        console.log('err msg : ' + err);
+        console.log(err.response.status)
+        if(err.response.status == 500){
+          setError('This email is not registered. Registered first then you can login.')
+        }else if(err.response.status == 502){
+          setError('Incorrect Password. Check your password and try again.')
+        }
       })
   }
 
   return (
     <div >
       {/* Error section */}
-      {errors &&
-        <div className=" bg-red-500 my-5 p-3 rounded-lg">
-
-          {Object.keys(errors).map(key => (
-            <p key={key}>{errors[key][0]}</p>
-          ))
-
-          }
+      {error &&
+        <div className=" bg-red-300 border-4 border-red-500 my-5 p-3 rounded-lg">
+          <p>{error}</p>
         </div>
 
       }
