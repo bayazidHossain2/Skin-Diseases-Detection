@@ -80,6 +80,7 @@ export default function AdminTokens() {
                 console.log('Token added success');
                 console.log(data);
                 setSuccess(data);
+                generateToken();
                 getAllToken();
             })
     }

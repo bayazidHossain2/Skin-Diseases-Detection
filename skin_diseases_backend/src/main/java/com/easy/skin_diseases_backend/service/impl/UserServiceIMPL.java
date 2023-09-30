@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -79,4 +80,16 @@ public class UserServiceIMPL implements UserService {
     public String getCount() {
         return ""+userRepository.count();
     }
+
+    @Override
+    public void addResearch(String userToken, Integer count) {
+        User user = getUserByToken(userToken);
+        if(user.getAvailableSearch() == null){
+            user.setAvailableSearch(0L);
+        }
+        user.setAvailableSearch(user.getAvailableSearch() + count);
+        userRepository.save(user);
+    }
+
+
 }

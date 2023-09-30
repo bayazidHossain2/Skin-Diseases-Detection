@@ -12,4 +12,6 @@ public interface TokenService {
     List<Token> getAll();
 
     void deleteToken(Long id);
+
+    Token getTokenByToken(String token);
 }

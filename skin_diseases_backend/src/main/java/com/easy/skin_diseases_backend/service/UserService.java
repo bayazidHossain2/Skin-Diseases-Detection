@@ -21,4 +21,6 @@ public interface UserService {
     List<User> getAllUsers();
 
     String getCount();
+
+    void addResearch(String userToken, Integer count);
 }

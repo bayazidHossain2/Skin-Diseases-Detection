@@ -35,4 +35,9 @@ public class TokenServiceIMPL implements TokenService {
     public void deleteToken(Long id) {
         tokenRepository.deleteById(id);
     }
+
+    @Override
+    public Token getTokenByToken(String token) {
+        return tokenRepository.findByToken(token);
+    }
 }

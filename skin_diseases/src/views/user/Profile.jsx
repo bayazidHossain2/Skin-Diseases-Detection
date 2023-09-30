@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component, useEffect, useRef, useState } from 'react'
 import axiosClient from '../../axios-client';
 import avater from '/avater.webp'
 import { useStateContext } from '../../contexts/contextProvider';
@@ -6,12 +6,18 @@ import { useStateContext } from '../../contexts/contextProvider';
 
 export default function Profile() {
     const [type, setType] = useState(false);
-    const { user, setUser } = useStateContext();
+    const { user, token, setUser } = useStateContext();
     const [imgBox, setimgBox] = useState(false);
     const [image, setImage] = useState();
     const [researchBox, setResearchBox] = useState(true);
     const [paymentMethod, setPaymentMethod] = useState();
     const [paymentText, setPaymentText] = useState();
+
+    const token1 = useRef();
+    const token2 = useRef();
+    const token3 = useRef();
+    const token4 = useRef();
+
 
 
     const updateProfile = () => {
@@ -55,6 +61,18 @@ export default function Profile() {
                 // setVision(data[0]);
                 console.log(data);
                 setPaymentText(data[0]);
+            })
+    }
+
+    const onTokenSubmit = () => {
+        const payload = {
+            userToken: token,
+            token: token1.current.value + token2.current.value + token3.current.value + token4.current.value
+        }
+        console.log(payload);
+        axiosClient.post('/token/getResearch', payload)
+            .then(() => {
+                console.log('Token add success');
             })
     }
     return (
@@ -231,6 +249,7 @@ export default function Profile() {
                         </div>
                         :
                         researchBox ?
+                            // Research Box Container
                             <div className="">
                                 {paymentMethod &&
                                     paymentMethod.map(method => (
@@ -251,15 +270,15 @@ export default function Profile() {
                                     <div class="flex flex-col w-full">
                                         <label class="font-bold">Token: </label>
                                         <div className="flex flex-row w-3/4 space-x-4">
-                                            <input type="text"  class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
-                                            <input type="text"  class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
-                                            <input type="text"  class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
-                                            <input type="text"  class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
+                                            <input ref={token1} type="text" class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
+                                            <input ref={token2} type="text" class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
+                                            <input ref={token3} type="text" class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
+                                            <input ref={token4} type="text" class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
 
                                         </div>
                                     </div>
                                     <div className="flex">
-                                        <button className=' self-end bg-orange-800 px-4 py-3 rounded-xl font-bold text-white '>Submit</button>
+                                        <button onClick={onTokenSubmit} className=' self-end bg-orange-800 px-4 py-3 rounded-xl font-bold text-white '>Submit</button>
 
                                     </div>
                                 </div>

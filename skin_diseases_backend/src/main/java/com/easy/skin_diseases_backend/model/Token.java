@@ -23,6 +23,10 @@ public class Token {
     @Column(length = 40)
     private String time;
 
+    public Long getId() {
+        return id;
+    }
+
     public Integer getCount() {
         return count;
     }
