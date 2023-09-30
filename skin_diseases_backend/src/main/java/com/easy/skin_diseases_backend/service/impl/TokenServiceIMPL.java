@@ -40,4 +40,9 @@ public class TokenServiceIMPL implements TokenService {
     public Token getTokenByToken(String token) {
         return tokenRepository.findByToken(token);
     }
+
+    @Override
+    public Integer getCount() {
+        return (int) tokenRepository.count();
+    }
 }

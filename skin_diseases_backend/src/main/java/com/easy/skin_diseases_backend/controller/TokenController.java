@@ -52,4 +52,9 @@ public class TokenController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Token Research Success.");
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getCount() {
+        return ResponseEntity.status(HttpStatus.OK).body(tokenService.getCount());
+    }
 }

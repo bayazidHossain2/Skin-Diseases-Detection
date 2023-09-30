@@ -12,6 +12,8 @@ export default function Profile() {
     const [researchBox, setResearchBox] = useState(true);
     const [paymentMethod, setPaymentMethod] = useState();
     const [paymentText, setPaymentText] = useState();
+    const [error, setError] = useState();
+    const [success, setSuccess] = useState();
 
     const token1 = useRef();
     const token2 = useRef();
@@ -269,6 +271,16 @@ export default function Profile() {
                                 <div className="flex flex-row space-x-4">
                                     <div class="flex flex-col w-full">
                                         <label class="font-bold">Token: </label>
+                                        {/* Error  */}
+                                        <div className={error ? "flex flex-row justify-between bg-red-200 m-5 p-4 border-2 border-red-400 rounded-xl" : "hidden"}>
+                                            <p>{error}</p>
+                                            <button onClick={(ev) => { ev.preventDefault(); setError('') }} className='text-red-800 p-2 hover:bg-blue-100'>X</button>
+                                        </div>
+                                        {/* Success  */}
+                                        <div className={success ? "flex flex-row justify-between bg-green-200 m-5 p-4 border-2 border-green-400 rounded-xl" : "hidden"}>
+                                            <p>{success}</p>
+                                            <button onClick={(ev) => { ev.preventDefault(); setSuccess('') }} className='text-red-800 p-2 hover:bg-blue-100'>X</button>
+                                        </div>
                                         <div className="flex flex-row w-3/4 space-x-4">
                                             <input ref={token1} type="text" class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />
                                             <input ref={token2} type="text" class="w-24 mt-2 py-1 px-2 text-xl font-bold rounded-lg bg-white border-2 border-gray-400 text-gray-800 focus:border-blue-500 focus:outline-none" />

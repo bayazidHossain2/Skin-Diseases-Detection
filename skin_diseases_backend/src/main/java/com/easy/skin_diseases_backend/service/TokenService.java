@@ -14,4 +14,6 @@ public interface TokenService {
     void deleteToken(Long id);
 
     Token getTokenByToken(String token);
+
+    Integer getCount();
 }

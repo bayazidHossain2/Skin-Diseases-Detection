@@ -3,15 +3,20 @@ import heroImg from '/hero.jpeg'
 import avater from '/avater.webp'
 import axiosClient from '../../axios-client';
 import { useNavigate } from 'react-router-dom';
+import axiosClientModelCaller from '../../axios-modelCaller';
 
 
 export default function Home() {
 
   const [image, setImage] = useState();
-  const [resultBox, setResultBox] = useState(true);
+  const [resultBox, setResultBox] = useState(false);
   const navigator = useNavigate();
   const [userCount, setUserCount] = useState(0);
   const [diseasesCount, setDiseasesCount] = useState(0);
+  const [diseasesName, setDiseasesName] = useState();
+  const [diseasesConfidence, setDiseasesConfidence] = useState();
+
+
 
   useEffect(() => {
     axiosClient.get('/user/count')
@@ -27,15 +32,30 @@ export default function Home() {
   }, [])
 
   const upload = () => {
+    setResultBox(true);
+
     const data = new FormData();
-    data.append('image', image);
+    data.append('file', image);
     console.log(data);
-    axiosClient.post('/image/save', data)
-      .then(() => {
-        console.log('profile update success');
-        closeBox();
-        navigate('/profile')
+    axiosClientModelCaller.post('/predict', data)
+      .then(({data}) => {
+        console.log('Image success');
+        console.log(data);
+        setDiseasesName(data.class);
+        setDiseasesConfidence(data.confidence);
+        console.log('return data');
+        // closeBox();
+        //navigate('/profile')
       })
+
+    // axiosClient.post('/search/predict', data)
+    //   .then(({data}) => {
+    //     console.log('Image success');
+    //     console.log(data);
+    //     console.log('return data');
+    //     // closeBox();
+    //     //navigate('/profile')
+    //   })
   }
 
   return (
@@ -352,11 +372,11 @@ export default function Home() {
           <div className="flex flex-col space-y-4 mt-10 lg:flex-row lg:space-y-0 justify-between">
             <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
               <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
-              <h2 className=' text-2xl font-semibold'>Diseas</h2>
+              <h2 className=' text-2xl font-semibold'>{diseasesName}</h2>
             </div>
             <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
               <h2 className=' text-2xl font-bold'>With Confidence : </h2>
-              <h2 className=' text-2xl font-semibold'>78%</h2>
+              <h2 className=' text-2xl font-semibold'>{diseasesConfidence}%</h2>
             </div>
           </div>
           {/* Feedback Section */}
