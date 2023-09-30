@@ -91,5 +91,27 @@ public class UserServiceIMPL implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public Long getAvailebaleSearch(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid user id " + id));
+        if(user == null){
+            return 0L;
+        }else {
+            return user.getAvailableSearch();
+        }
+    }
+
+    @Override
+    public void useSearch(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid user id " + userId));
+
+        if(user != null){
+            user.setAvailableSearch(user.getAvailableSearch()-1);
+            userRepository.save(user);
+        }
+    }
+
 
 }

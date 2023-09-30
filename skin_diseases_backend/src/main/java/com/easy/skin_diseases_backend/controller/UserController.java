@@ -62,6 +62,17 @@ public class UserController {
                 .body(user);
     }
 
+    @GetMapping("/searchable/{id}")
+    public ResponseEntity<?> getSearchable(@PathVariable Long id){
+        Long searchCount = userService.getAvailebaleSearch(id);
+
+        if(searchCount > 0){
+            return ResponseEntity.status(HttpStatus.OK).body(searchCount);
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(searchCount);
+        }
+    }
+
     @PostMapping("/logout")
     public String logoutUser(@RequestBody User user){
         userService.setLogout(user);

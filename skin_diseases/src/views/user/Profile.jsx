@@ -14,6 +14,8 @@ export default function Profile() {
     const [paymentText, setPaymentText] = useState();
     const [error, setError] = useState();
     const [success, setSuccess] = useState();
+    const [allHistory, setAllHistory] = useState();
+
 
     const token1 = useRef();
     const token2 = useRef();
@@ -21,6 +23,18 @@ export default function Profile() {
     const token4 = useRef();
 
 
+
+    useEffect(() => {
+        getAllHistory();
+
+    }, [])
+    const getAllHistory = () => {
+        axiosClient.get('/history/all/' + user.id)
+            .then(({ data }) => {
+                console.log(data);
+                setAllHistory(data);
+            })
+    }
 
     const updateProfile = () => {
 
@@ -77,6 +91,15 @@ export default function Profile() {
                 console.log('Token add success');
             })
     }
+
+    const onDeleteHistory = (id) => {
+        axiosClient.delete('/history/delete/' + id)
+            .then(({ data }) => {
+                console.log('Delete Success');
+                console.log(data);
+                getAllHistory();
+            })
+    }
     return (
         <div className="relative">
 
@@ -105,114 +128,38 @@ export default function Profile() {
                     <hr className='my-16 border-2 border-orange-600' />
                     <h2 className='text-xl font-bold mb-5'>Search History</h2>
                     <div className="grid grid-col1 gap-2 md:gap-4 lg:gap-8 md:grid-cols-2">
-                        <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
-                            <div className="flex flex-col space-x-4 lg:flex-row">
-                                {/* Image */}
-                                <div className="flex flex-row justify-center ">
-                                    <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
-                                </div>
-                                {/* Result show section */}
-                                <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
-                                    <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
-                                        <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
-                                        <h2 className=' text-2xl font-semibold'>Diseas</h2>
-                                    </div>
-                                    <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
-                                        <h2 className=' text-2xl font-bold'>With Confidence : </h2>
-                                        <h2 className=' text-2xl font-semibold'>78%</h2>
-                                    </div>
-                                </div>
+                        {allHistory &&
 
-                            </div>
-                            {/* Feedback Section */}
-                            <div className="flex flex-col mt-4">
-                                <p className=' p-2 w-full border-2 border-orange-600 rounded-lg'>
-                                    feedback
-                                </p>
-                                <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete Feedback</button>
-                            </div>
-                        </div>
-                        <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
-                            <div className="flex flex-col space-x-4 lg:flex-row">
-                                {/* Image */}
-                                <div className="flex flex-row justify-center ">
-                                    <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
-                                </div>
-                                {/* Result show section */}
-                                <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
-                                    <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
-                                        <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
-                                        <h2 className=' text-2xl font-semibold'>Diseas</h2>
-                                    </div>
-                                    <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
-                                        <h2 className=' text-2xl font-bold'>With Confidence : </h2>
-                                        <h2 className=' text-2xl font-semibold'>78%</h2>
-                                    </div>
-                                </div>
+                            allHistory.map(history => (
+                                <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
+                                    <div className="flex flex-col space-x-4 lg:flex-row">
+                                        {/* Image */}
+                                        <div className="flex flex-row justify-center ">
+                                            <img src={history.imageUrl ? 'http://localhost:8081/history/image?link=' + history.imageUrl : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
+                                        </div>
+                                        {/* Result show section */}
+                                        <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
+                                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                                <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
+                                                <h2 className=' text-2xl font-semibold'>{history.diseasesName}</h2>
+                                            </div>
+                                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                                <h2 className=' text-2xl font-bold'>With Confidence : </h2>
+                                                <h2 className=' text-2xl font-semibold'>{history.confidence}%</h2>
+                                            </div>
+                                            <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
+                                                <h2 className=' text-xl font-semibold'>Date & time : </h2>
+                                                <h2 className=' text-xl'>{history.date}</h2>
+                                            </div>
+                                            <button onClick={ev => { ev.preventDefault(); onDeleteHistory(history.id) }} className=' bg-red-700 mt-2 p-4 py-1 rounded-md text-white self-end'>Delete this history</button>
 
-                            </div>
-                            {/* Feedback Section */}
-                            <div className="flex flex-col mt-4">
-                                <p className=' p-2 w-full border-2 border-orange-600 rounded-lg'>
-                                    feedback
-                                </p>
-                                <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete Feedback</button>
-                            </div>
-                        </div>
-                        <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
-                            <div className="flex flex-col space-x-4 lg:flex-row">
-                                {/* Image */}
-                                <div className="flex flex-row justify-center ">
-                                    <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
-                                </div>
-                                {/* Result show section */}
-                                <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
-                                    <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
-                                        <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
-                                        <h2 className=' text-2xl font-semibold'>Diseas</h2>
-                                    </div>
-                                    <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
-                                        <h2 className=' text-2xl font-bold'>With Confidence : </h2>
-                                        <h2 className=' text-2xl font-semibold'>78%</h2>
-                                    </div>
-                                </div>
+                                        </div>
 
-                            </div>
-                            {/* Feedback Section */}
-                            <div className="flex flex-col mt-4">
-                                <p className=' p-2 w-full border-2 border-orange-600 rounded-lg'>
-                                    feedback
-                                </p>
-                                <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete Feedback</button>
-                            </div>
-                        </div>
-                        <div className="min-w-[45%] border-2 p-5 border-blue-900 rounded-xl">
-                            <div className="flex flex-col space-x-4 lg:flex-row">
-                                {/* Image */}
-                                <div className="flex flex-row justify-center ">
-                                    <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
-                                </div>
-                                {/* Result show section */}
-                                <div className="flex flex-col space-y-4 mt-10lg:space-y-0">
-                                    <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
-                                        <h2 className=' text-2xl font-bold'>Diseases Name : </h2>
-                                        <h2 className=' text-2xl font-semibold'>Diseas</h2>
-                                    </div>
-                                    <div className="flex flex-col lg:flex-row lg:space-x-2 lg:space-y-0">
-                                        <h2 className=' text-2xl font-bold'>With Confidence : </h2>
-                                        <h2 className=' text-2xl font-semibold'>78%</h2>
                                     </div>
                                 </div>
+                            ))
+                        }
 
-                            </div>
-                            {/* Feedback Section */}
-                            <div className="flex flex-col mt-4">
-                                <p className=' p-2 w-full border-2 border-orange-600 rounded-lg'>
-                                    feedback
-                                </p>
-                                <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Delete Feedback</button>
-                            </div>
-                        </div>
                     </div>
 
                 </div>

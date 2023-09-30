@@ -23,4 +23,8 @@ public interface UserService {
     String getCount();
 
     void addResearch(String userToken, Integer count);
+
+    Long getAvailebaleSearch(Long id);
+
+    void useSearch(Long userId);
 }

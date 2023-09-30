@@ -1,21 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import heroImg from '/hero.jpeg'
 import avater from '/avater.webp'
 import axiosClient from '../../axios-client';
 import { useNavigate } from 'react-router-dom';
 import axiosClientModelCaller from '../../axios-modelCaller';
+import { useStateContext } from '../../contexts/contextProvider';
 
 
 export default function Home() {
-
+  
+  const [error, setError] = useState();
   const [image, setImage] = useState();
   const [resultBox, setResultBox] = useState(false);
   const navigator = useNavigate();
+  const [diseasesImg, setDiseasesImg] = useState();
+  const [isSelected, setIsSelected] = useState(false);
   const [userCount, setUserCount] = useState(0);
+  const [searchCount, setSearchCount] = useState(0);
   const [diseasesCount, setDiseasesCount] = useState(0);
+
   const [diseasesName, setDiseasesName] = useState();
   const [diseasesConfidence, setDiseasesConfidence] = useState();
 
+  const [Statistic, setStatistic] = useState();
+  const feedbackRef = useRef();
+  const { user, setUser, token } = useStateContext();
 
 
   useEffect(() => {
@@ -27,35 +36,107 @@ export default function Home() {
       .then(({ data }) => {
         setDiseasesCount(data);
       })
+    axiosClient.get('/history/count')
+      .then(({ data }) => {
+        setSearchCount(data);
+      })
+    axiosClient.get('/history/countByName')
+      .then(({ data }) => {
+        setStatistic(data);
+        console.log(data);
+      })
 
 
   }, [])
 
   const upload = () => {
-    setResultBox(true);
 
-    const data = new FormData();
-    data.append('file', image);
-    console.log(data);
-    axiosClientModelCaller.post('/predict', data)
-      .then(({data}) => {
-        console.log('Image success');
+    const imgData = new FormData();
+    imgData.append('file', image);
+    console.log(imgData);
+    if (user && (user.availableSearch > 0)) {
+
+      setResultBox(true);
+      axiosClient.post('/history/image', imgData)
+        .then(({ data }) => {
+          console.log('Image save success');
+          console.log(data);
+          setDiseasesImg(data);
+          axiosClientModelCaller.post('/predict', imgData)
+            .then(({ data }) => {
+              console.log('Image success');
+              console.log(data);
+              setDiseasesName(data.class);
+              setDiseasesConfidence(data.confidence);
+              console.log('return data');
+              // closeBox();
+              //navigate('/profile')
+            })
+
+        })
+
+    } else {
+      setError('You do not have sufficent search. Please research search first.');
+    }
+
+  }
+
+  const onClose = () => {
+    const payload = {
+      userId: user.id,
+      diseasesName: diseasesName,
+      isNameShow: true,
+      confidence: diseasesConfidence,
+      imageUrl: diseasesImg,
+      feedback: '',
+    }
+    console.log(payload);
+    axiosClient.post('/history/add', payload)
+      .then(({ data }) => {
+        console.log('History add success.');
         console.log(data);
-        setDiseasesName(data.class);
-        setDiseasesConfidence(data.confidence);
-        console.log('return data');
-        // closeBox();
-        //navigate('/profile')
+        axiosClient.post('/user', token)
+          .then(({ data }) => {
+            setUser(data);
+            console.log('data added');
+            console.log(data);
+          })
       })
 
-    // axiosClient.post('/search/predict', data)
-    //   .then(({data}) => {
-    //     console.log('Image success');
-    //     console.log(data);
-    //     console.log('return data');
-    //     // closeBox();
-    //     //navigate('/profile')
-    //   })
+    setResultBox(false)
+  }
+
+  const getCss = (per) => {
+    let col = '';
+    if(per <=18){
+      col = 'bg-blue-500'
+      per=10
+    }else if(per <=30){
+      col = 'bg-pink-500'
+      per=30
+    }else if(per <=40){
+      col = 'bg-pink-600'
+      per=40
+    }else if(per <=50){
+      col = 'bg-pink-700'
+      per=50
+    }else if(per <=60){
+      per=60
+      col = 'bg-red-600'
+    }else if(per <=70){
+      per=70
+      col = 'bg-red-600'
+    }else if(per <=80){
+      per=80
+      col = 'bg-red-600'
+    }else if(per <=90){
+      per=90
+      col = 'bg-red-600'
+    }else{
+      pre=100
+      col = 'bg-green-600'
+    }
+    return 'shadow-none flex flex-col w-['+per+'%] text-center whitespace-nowrap text-white justify-center '+col;
   }
 
   return (
@@ -67,7 +148,12 @@ export default function Home() {
           <div className="absolute inset-0 flex items-center justify-center p-4 lg:p-10">
             <div className="flex flex-col space-y-4 text-center bg-orange-500 rounded-lg shadow-md bg-opacity-50 p-4 lg:space-y-6  lg:p-8">
               <h2 className=' text-xl font-bold text-white'>Set Your Test Image</h2>
+              {error &&
+                <div className=" bg-red-300 border-4 border-red-500 my-5 p-3 rounded-lg">
+                  <p>{error}</p>
+                </div>
 
+              }
               <input onChange={(ev) => {
                 setImage(ev.target.files[0]);
                 console.log(ev.target.files[0])
@@ -98,7 +184,7 @@ export default function Home() {
                 <svg className='p-2' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
               </div>
               <div class="text-right">
-                <p class="text-2xl">12145</p>
+                <p class="text-2xl">{searchCount}</p>
                 <p>Total Search</p>
               </div>
             </div>
@@ -126,228 +212,34 @@ export default function Home() {
           <div class="grid grid-cols-1 lg:grid-cols-1 p-4 gap-4 lg:p-10">
 
             {/* Social Traffic */}
-            <div class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
+            <div class="relative flex flex-col min-w-0 mb-4 bg-orange-200 lg:mb-0 break-words w-full shadow-lg rounded">
               <div class="rounded-t mb-0 px-0 border-0">
-                <div class="flex flex-wrap items-center px-4 py-2">
-                  <div class="relative w-full max-w-full flex-grow flex-1">
-                    <h3 class="font-semibold text-base text-gray-900 dark:text-gray-50">Diseases Search</h3>
-                  </div>
-                  <div class="relative w-full max-w-full flex-grow flex-1 text-right">
-                    <button class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">See all</button>
-                  </div>
-                </div>
+                <h3 class="font-semibold p-4 rounded-t-lg bg-orange-300 text-xl text-gray-900">Diseases Search Statistic</h3>
 
-                <div className="flex flex-col bg-red-100 w-full">
-                  <div className="flex flex-row p-2 justify-between">
 
-                    <div class="px-4 bg-gray-100 text-gray-500 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Referral</div>
-                    <div class="px-4 bg-gray-100 text-gray-500 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Visitors</div>
-                    <div class="px-4 bg-gray-100 text-gray-500 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">Parcentage</div>
-                  </div>
-                  {/* Catagory Parcentage */}
-                  <div className="w-full">
-                    <div class="text-gray-700 w-full flex flex-row">
-                      <h3 class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left text-sm font-semibold">Normal</h3>
-                      <p class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">5,480</p>
-                      <div class="border-t-0 px-4 w-1/2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <div class="flex items-center">
-                          <span class="mr-2">70%</span>
-                          <div class="relative w-full">
-                            <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                              <div class="shadow-none flex flex-col w-[70%] text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
+                <div className="flex flex-col w-full">
+                  {Statistic &&
+                    Statistic.map(st => (
+                      // {/* Catagory Parcentage */}
+                      <div className="w-full">
+                        <div class="text-gray-700 w-full flex flex-row">
+                          <h3 class="border-t-0 px-4 w-1/4 text-lg align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left font-semibold">{st[0]}</h3>
+                          <p class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">{st[1]}</p>
+                          <div class="border-t-0 px-4 w-1/2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            <div class="flex items-center">
+                              <span class="mr-2 ">{Math.round(st[1]*100/searchCount)}%</span>
+                              <div class="relative w-full">
+                                <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
+                                  <div className={getCss(+Math.round(st[1]*100/searchCount))}></div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    ))
+                  }
 
-                  {/* Catagory Parcentage */}
-                  <div className="w-full">
-                    <div class="text-gray-700 w-full flex flex-row">
-                      <h3 class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Normal</h3>
-                      <p class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">5,480</p>
-                      <div class="border-t-0 px-4 w-1/2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <div class="flex items-center">
-                          <span class="mr-2">70%</span>
-                          <div class="relative w-full">
-                            <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                              <div class="shadow-none flex flex-col w-[70%] text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Catagory Parcentage */}
-                  <div className="w-full">
-                    <div class="text-gray-700 w-full flex flex-row">
-                      <h3 class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Normal</h3>
-                      <p class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">5,480</p>
-                      <div class="border-t-0 px-4 w-1/2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <div class="flex items-center">
-                          <span class="mr-2">70%</span>
-                          <div class="relative w-full">
-                            <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                              <div class="shadow-none flex flex-col w-[70%] text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Catagory Parcentage */}
-                  <div className="w-full">
-                    <div class="text-gray-700 w-full flex flex-row">
-                      <h3 class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Normal</h3>
-                      <p class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">5,480</p>
-                      <div class="border-t-0 px-4 w-1/2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <div class="flex items-center">
-                          <span class="mr-2">70%</span>
-                          <div class="relative w-full">
-                            <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                              <div class="shadow-none flex flex-col w-[70%] text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  {/* Catagory Parcentage */}
-                  <div className="w-full">
-                    <div class="text-gray-700 w-full flex flex-row">
-                      <h3 class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Normal</h3>
-                      <p class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">5,480</p>
-                      <div class="border-t-0 px-4 w-1/2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <div class="flex items-center">
-                          <span class="mr-2">70%</span>
-                          <div class="relative w-full">
-                            <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                              <div class="shadow-none flex flex-col w-[70%] text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  {/* Catagory Parcentage */}
-                  <div className="w-full">
-                    <div class="text-gray-700 w-full flex flex-row">
-                      <h3 class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Normal</h3>
-                      <p class="border-t-0 px-4 w-1/4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">5,480</p>
-                      <div class="border-t-0 px-4 w-1/2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <div class="flex items-center">
-                          <span class="mr-2">70%</span>
-                          <div class="relative w-full">
-                            <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                              <div class="shadow-none flex flex-col w-[70%] text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="block w-full overflow-x-auto bg-red-100">
-                  <table class="items-center w-full bg-transparent border-collapse">
-                    <thead>
-                      <tr className='flex flex-row justify-between w-full'>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <tr class="text-gray-700 dark:text-gray-100">
-                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Basal Cell Carcinoma</th>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">3,380</td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <div class="flex items-center">
-                            <span class="mr-2">40%</span>
-                            <div class="relative w-full">
-                              <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                <div class="shadow-none flex flex-col w-[40%] text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr class="text-gray-700 dark:text-gray-100">
-                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Actinic Keratosis</th>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">4,105</td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <div class="flex items-center">
-                            <span class="mr-2">45%</span>
-                            <div class="relative w-full">
-                              <div class="overflow-hidden h-2 text-xs flex rounded bg-pink-200">
-                                <div class="shadow-none flex flex-col w-[45%] text-center whitespace-nowrap text-white justify-center bg-pink-500"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr class="text-gray-700 dark:text-gray-100">
-                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Seborrheic Keratosis</th>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">4,985</td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <div class="flex items-center">
-                            <span class="mr-2">60%</span>
-                            <div class="relative w-full">
-                              <div class="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                                <div class="shadow-none flex flex-col w-[60%] text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr class="text-gray-700 dark:text-gray-100">
-                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Dermatofibrosarcoma Protuberans</th>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">2,250</td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <div class="flex items-center">
-                            <span class="mr-2">30%</span>
-                            <div class="relative w-full">
-                              <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                <div class="shadow-none flex flex-col w-[30%] text-center whitespace-nowrap text-white justify-center bg-blue-700"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr class="text-gray-700 dark:text-gray-100">
-                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Melanoma</th>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">2,250</td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <div class="flex items-center">
-                            <span class="mr-2">10%</span>
-                            <div class="relative w-full">
-                              <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                <div class="shadow-none flex flex-col w-[30%] text-center whitespace-nowrap text-white justify-center bg-blue-700"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr class="text-gray-700 dark:text-gray-100">
-                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">melanocytic nevi</th>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">2,250</td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <div class="flex items-center">
-                            <span class="mr-2">20%</span>
-                            <div class="relative w-full">
-                              <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                <div class="shadow-none flex flex-col w-[30%] text-center whitespace-nowrap text-white justify-center bg-blue-700"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>
@@ -362,11 +254,11 @@ export default function Home() {
         <div className="flex flex-col">
           <div className="flex flex-row mb-4 justify-between">
             <h2 className=' text-2xl font-bold text-blue-900'>Search Result</h2>
-            <button onClick={(ev) => { ev.preventDefault(); setResultBox(false) }} className=' bg-slate-800 rounded-md text-white px-3'>Close</button>
+            <button onClick={(ev) => { ev.preventDefault(); onClose() }} className=' bg-slate-800 rounded-md text-white px-3'>{diseasesName ? 'Save &' : ''}Close</button>
           </div>
           {/* Image */}
           <div className="flex flex-row justify-center ">
-            <img src={false ? 'http://localhost:8081/image/profile?link=' : avater} className='max-h-[40vh] border-4 border-orange-500 rounded-lg' />
+            <img src={diseasesImg ? 'http://localhost:8081/history/image?link=' + diseasesImg : avater} className='max-h-[40vh] border-4 border-orange-500 rounded-lg' />
           </div>
           {/* Result show section */}
           <div className="flex flex-col space-y-4 mt-10 lg:flex-row lg:space-y-0 justify-between">
@@ -380,10 +272,19 @@ export default function Home() {
             </div>
           </div>
           {/* Feedback Section */}
-          <div className="flex flex-col mt-4">
-            <textarea placeholder='Write your feedback about the result..' className='h-[12vh] p-2 w-full border-2 border-orange-600 rounded-lg' />
-            <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white self-end'>Submit Feedback</button>
-          </div>
+          {/* <div className="flex flex-col mt-4">
+            <textarea ref={feedbackRef} placeholder='Write your feedback about the result..' className='h-[12vh] p-2 w-full border-2 border-orange-600 rounded-lg' />
+            <div className="flex flex-row space-x-4 items-center self-end">
+              <h2 className=' text-xl font-semibold'>Hide my name : </h2>
+              <input
+                className='h-6 w-6 '
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => { setIsSelected(!isSelected) }}
+              />
+              <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white'>Submit Feedback</button>
+            </div>
+          </div> */}
         </div>
       </div>
     </div>
