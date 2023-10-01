@@ -7,7 +7,7 @@ import axiosClient from '../axios-client';
 
 export default function DefaultLayout() {
 
-  const { user, token, setUser } = useStateContext();
+  const { user, token, setUser, setToken } = useStateContext();
 
   const [bottomMenue, setBottomMenue] = useState(false);
   const [usersActive, setUserActive] = useState(false);
@@ -46,6 +46,29 @@ export default function DefaultLayout() {
 
   }
 
+  const onLogout = (ev) => {
+    ev.preventDefault()
+
+    console.log('logout click');
+    console.log(user);
+    console.log(token);
+
+
+    axiosClient.post('/user/logout', user)
+        .then(({ data }) => {
+            console.log(data);
+            setUser({})
+            setToken(null)
+            // console.log('logout Success');
+        })
+        .catch(err => {
+            response = err.response;
+            console.log('log out fail');
+            console.log(response);
+
+        })
+}
+
 
   return (
     <div>
@@ -55,23 +78,23 @@ export default function DefaultLayout() {
         <div className="fixed w-full flex items-center justify-between h-14 text-white z-10">
           <div className="flex items-center justify-start md:justify-center pl-3 w-14 md:w-64 h-14 bg-blue-800 dark:bg-gray-800 border-none">
             <img className="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden" src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg" />
-            <span className="hidden md:block">ADMIN</span>
+            <span className="hidden md:block">{user.name}</span>
           </div>
           <div class="flex justify-between items-center h-14 bg-blue-800 dark:bg-gray-800 header-right">
             <div className="">
-              <h1 className=' text-xl font-bold p-2'>Easy Skin Diseases Detection</h1>
+              <h1 className=' text-xl font-bold p-2'>Easy Skin Cure Admin</h1>
             </div>
             <ul class="flex items-center">
               <li>
                 <div class="block w-px h-6 mx-3 bg-gray-400 dark:bg-gray-700"></div>
               </li>
               <li>
-                <a href="#" class="flex items-center mr-4 hover:text-blue-100">
+                <div onClick={onLogout} class="flex items-center mr-4 hover:text-blue-100">
                   <span class="inline-flex mr-1">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                   </span>
                   Logout
-                </a>
+                </div>
               </li>
             </ul>
           </div>

@@ -29,4 +29,9 @@ public class DiseasesServiceIMPL implements DiseasesService {
     public String getCount() {
         return ""+diseasesRepository.count();
     }
+
+    @Override
+    public Diseases getByTitle(String title) {
+        return diseasesRepository.findByTitle(title);
+    }
 }

@@ -10,4 +10,6 @@ public interface DiseasesService {
     List<Diseases> getAllDiseases();
 
     String getCount();
+
+    Diseases getByTitle(String title);
 }

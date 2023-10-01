@@ -10,11 +10,20 @@ export default function Signup() {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
 
-  const [errors, setErrors] = useState(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const onSignup = () => {
+    setError('');
+    if((nameRef.current.value=='') || (emailRef.current.value=='') || (DOBRef.current.value=='') || (passwordRef.current.value=='') || (confirmPasswordRef.current.value=='')){
+      setError('All fild is not filled.')
+      return
+    }
+    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+      setError('Password and confirm password should be match.');
+      return
+    }
     const payload = {
       "name": nameRef.current.value,
       "email": emailRef.current.value,
@@ -24,14 +33,14 @@ export default function Signup() {
     }
     console.log(payload);
 
-    axiosClient.post('/user/add',payload)
-      .then(({data}) => {
-        console.log('Success msg is : '+data);
+    axiosClient.post('/user/add', payload)
+      .then(({ data }) => {
+        console.log('Success msg is : ' + data);
         navigate('/login');
-        
+
       })
       .catch(err => {
-        console.log('err msg : '+err);
+        console.log('err msg : ' + err);
       })
 
   }
@@ -42,14 +51,10 @@ export default function Signup() {
 
       <div>
         {/* Error section */}
-        {errors &&
-          <div className=" bg-red-500 my-5 p-3 rounded-lg">
-
-            {Object.keys(errors).map(key => (
-              <p key={key}>{errors[key][0]}</p>
-            ))}
-          </div>
-        }
+        <div className={error ? "flex flex-row justify-between bg-red-200 my-5 p-4 border-2 border-red-400 rounded-xl" : "hidden"}>
+          <p>{error}</p>
+          <button onClick={(ev) => { ev.preventDefault(); setError('') }} className='text-red-800 p-2 hover:bg-blue-100'>X</button>
+        </div>
         <form>
           <h2 className=' font-bold text-xl text-black'>Registration :</h2>
           {/* Name  */}

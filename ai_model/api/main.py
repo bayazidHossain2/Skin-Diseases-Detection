@@ -28,10 +28,11 @@ app.add_middleware(
 #     allow_headers=["*"],
 # )
 
-MODEL = tf.keras.models.load_model("saved_models/skin_disease/model")
+# MODEL = tf.keras.models.load_model("saved_models/skin_disease/model")
+MODEL = tf.keras.models.load_model("1")
+# CLASS_NAMES = ['Actinic keratoses', 'Basal cell carcinoma', 'Benign lesions of the keratosis', 'Dermatofibrosarcoma', 'malignant melanoma', 'Melanocytic nevi', 'Vascular Disease']
 
-CLASS_NAMES = ['Actinic keratoses', 'Basal cell carcinoma', 'Benign lesions of the keratosis', 'Dermatofibrosarcoma', 'malignant melanoma', 'Melanocytic nevi', 'Vascular Disease']
-
+CLASS_NAMES= ['Enfeksiyonel', 'Ekzama', 'Akne', 'Pigment', 'Benign', 'Malign', 'Normal']
 
 
 def read_file_as_image(data) -> np.ndarray:
@@ -44,7 +45,7 @@ async def predict(
 ):
     image = read_file_as_image(await file.read())
     # print(image.shape)
-    image = cv2.resize(image, (28, 28))
+    image = cv2.resize(image, (128, 128))
     # print(image.shape)
     # image = np.array(image)
     # image = image / 255.0

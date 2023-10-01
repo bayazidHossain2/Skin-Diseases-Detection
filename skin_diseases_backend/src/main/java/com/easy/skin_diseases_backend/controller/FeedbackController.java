@@ -38,4 +38,9 @@ public class FeedbackController {
         feedbackService.deleteFeedback(id);
         return ResponseEntity.status(HttpStatus.OK).body("Delete Success");
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getCount(){
+        return ResponseEntity.status(HttpStatus.OK).body(feedbackService.getCount());
+    }
 }

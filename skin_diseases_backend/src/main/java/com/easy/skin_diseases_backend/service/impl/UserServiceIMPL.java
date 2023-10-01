@@ -24,7 +24,7 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public void addUser(User user) {
-        user.setAvailableSearch(3L);
+        user.setAvailableSearch(5L);
         userRepository.save(user);
     }
 

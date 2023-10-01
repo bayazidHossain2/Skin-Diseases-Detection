@@ -13,4 +13,6 @@ public interface FeedbackService {
     void deleteFeedback(Long id);
 
     List<FeedbackAdminDTO> getAllFeedbackAdmin();
+
+    Long getCount();
 }

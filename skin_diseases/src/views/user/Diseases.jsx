@@ -18,7 +18,7 @@ export default function Diseases() {
   }, [])
 
   return (
-    <div className=' bg-orange-300'>
+    <div className=' bg-orange-200 mx-auto md:w-[80%]'>
       
       <section class="max-w-[90%] min-h-screen mx-auto md:max-w-[80%]">
         <div class="w-full">

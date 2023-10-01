@@ -22,9 +22,7 @@ export default function UserPageLayout() {
           })
       }, [])
 
-    if (!token) {
-        return <Navigate to="/login" />
-    }
+    
     //   const { token } = useStateContext()
     //   if (token) {
     //     return <Navigate to="/" />

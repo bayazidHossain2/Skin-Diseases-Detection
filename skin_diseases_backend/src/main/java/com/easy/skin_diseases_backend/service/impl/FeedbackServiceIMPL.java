@@ -77,6 +77,11 @@ public class FeedbackServiceIMPL implements FeedbackService {
     }
 
     @Override
+    public Long getCount() {
+        return feedbackRepository.count();
+    }
+
+    @Override
     public void deleteFeedback(Long id) {
         feedbackRepository.deleteById(id);
     }

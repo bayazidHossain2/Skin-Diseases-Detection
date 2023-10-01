@@ -89,6 +89,7 @@ export default function Profile() {
         axiosClient.post('/token/getResearch', payload)
             .then(() => {
                 console.log('Token add success');
+                setType(false);
             })
     }
 

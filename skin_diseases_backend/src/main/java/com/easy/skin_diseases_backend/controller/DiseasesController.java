@@ -22,6 +22,11 @@ public class DiseasesController {
         return diseasesService.getAllDiseases();
     }
 
+    @GetMapping("/{title}")
+    public ResponseEntity<Diseases> getDiseases(@PathVariable String title) {
+        return ResponseEntity.status(HttpStatus.OK).body(diseasesService.getByTitle(title));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<String> addContent(@RequestBody Diseases diseases){
         diseasesService.addDiseases(diseases);

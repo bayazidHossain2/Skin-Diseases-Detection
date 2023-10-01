@@ -14,6 +14,10 @@ export default function Login() {
 
   const onLogin = () => {
     setError('');
+    if((emailRef.current.value=='') || (passwordRef.current.value=='')){
+      setError('All fild is not filled.')
+      return
+    }
     const payload = {
       "email": emailRef.current.value,
       "password": passwordRef.current.value,

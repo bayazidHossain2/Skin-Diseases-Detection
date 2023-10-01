@@ -52,7 +52,6 @@ export default function AdminUsers() {
                 <button className='bg-red-600 mt-4 w-1/4 self-end px-2 py-1 rounded-lg text-white font-semibold'>Delete User</button>
               </div>
             ))
-
           }
         </div>
       </div>
