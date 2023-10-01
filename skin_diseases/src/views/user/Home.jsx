@@ -136,7 +136,8 @@ export default function Home() {
       pre=100
       col = 'bg-green-600'
     }
-    return 'shadow-none flex flex-col w-['+per+'%] text-center whitespace-nowrap text-white justify-center '+col;
+    const wid = ' w-['+per+'%] ';
+    return 'shadow-none flex flex-col '+wid+' text-center whitespace-nowrap text-white justify-center '+col;
   }
 
   return (
@@ -271,20 +272,6 @@ export default function Home() {
               <h2 className=' text-2xl font-semibold'>{diseasesConfidence}%</h2>
             </div>
           </div>
-          {/* Feedback Section */}
-          {/* <div className="flex flex-col mt-4">
-            <textarea ref={feedbackRef} placeholder='Write your feedback about the result..' className='h-[12vh] p-2 w-full border-2 border-orange-600 rounded-lg' />
-            <div className="flex flex-row space-x-4 items-center self-end">
-              <h2 className=' text-xl font-semibold'>Hide my name : </h2>
-              <input
-                className='h-6 w-6 '
-                type="checkbox"
-                checked={isSelected}
-                onChange={() => { setIsSelected(!isSelected) }}
-              />
-              <button className=' bg-orange-800 mt-2 px-4 py-1 rounded-md text-white'>Submit Feedback</button>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

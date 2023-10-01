@@ -93,6 +93,9 @@ export default function Profile() {
     }
 
     const onDeleteHistory = (id) => {
+        if (!confirm('Are you sure to delete the history.')) {
+            return
+        }
         axiosClient.delete('/history/delete/' + id)
             .then(({ data }) => {
                 console.log('Delete Success');
@@ -121,7 +124,7 @@ export default function Profile() {
                         </div>
                         {/* Profile image */}
                         <div className=" border-4 border-blue-600 self-center rounded-xl">
-                            <img onClick={(ev) => { ev.preventDefault(); setimgBox(true); setType('Update Profile') }} src={user.profileUrl ? 'http://localhost:8081/image/profile?link=' + user.profileUrl : avater} className='h-40 w-40 rounded-xl p-1' />
+                            <img onClick={(ev) => { ev.preventDefault(); setimgBox(true); setType('Update Profile') }} src={user.profileUrl ?  `${import.meta.env.VITE_API_BASE_URL}` + '/image/profile?link=' + user.profileUrl : avater} className='h-40 w-40 rounded-xl p-1' />
                         </div>
                     </div>
 
@@ -135,7 +138,7 @@ export default function Profile() {
                                     <div className="flex flex-col space-x-4 lg:flex-row">
                                         {/* Image */}
                                         <div className="flex flex-row justify-center ">
-                                            <img src={history.imageUrl ? 'http://localhost:8081/history/image?link=' + history.imageUrl : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
+                                            <img src={history.imageUrl ?  `${import.meta.env.VITE_API_BASE_URL}` + '/history/image?link=' + history.imageUrl : avater} className='max-h-[20vh] border-4 border-orange-500 rounded-lg' />
                                         </div>
                                         {/* Result show section */}
                                         <div className="flex flex-col space-y-4 mt-10lg:space-y-0">

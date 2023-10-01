@@ -126,7 +126,7 @@ export default function AdminDiseases() {
                             (counter++ & 1) ?
                                 <div class="mx-auto grid grid-cols-1 gap-4 lg:grid-cols-3 pb-20">
                                     <div class="order-1 lg:order-2 aspect-w-5 aspect-h-3 md:aspect-w-2 md:aspect-h-1 lg:aspect-w-3 lg:aspect-h-1">
-                                        <img src={dis.imageUrl ? 'http://localhost:8081/image/diseases?link=' + dis.imageUrl : avater} alt="background" className="object-cover rounded-sm" />
+                                        <img src={dis.imageUrl ? `${import.meta.env.VITE_API_BASE_URL}` + '/image/diseases?link=' + dis.imageUrl : avater} alt="background" className="object-cover rounded-sm" />
                                     </div>
                                     <div
                                         class="order-2 lg:order-1 lg:col-span-2 bg-white px-4 py-10 flex flex-col items-start justify-start gap-8 shadow-lg rounded-b-md">
@@ -142,7 +142,7 @@ export default function AdminDiseases() {
                                 :
                                 <div class="mx-auto grid grid-cols-1 gap-4 lg:grid-cols-3 py-20">
                                     <div class="aspect-w-5 aspect-h-3 md:aspect-w-2 md:aspect-h-1 lg:aspect-w-3 lg:aspect-h-1">
-                                        <img src={dis.imageUrl ? 'http://localhost:8081/image/diseases?link=' + dis.imageUrl : avater} alt="background" className="object-cover rounded-sm" />
+                                        <img src={dis.imageUrl ? `${import.meta.env.VITE_API_BASE_URL}` + '/image/diseases?link=' + dis.imageUrl : avater} alt="background" className="object-cover rounded-sm" />
                                     </div>
                                     <div
                                         class="lg:col-span-2 bg-white px-4 py-10 flex flex-col items-start justify-start gap-8 shadow-lg rounded-b-md">
