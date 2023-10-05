@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import avater from '/avater.webp'
 import axiosClient from '../../axios-client';
+import { useStateContext } from '../../contexts/contextProvider';
 
 export default function AdminUsers() {
   const [allUser, setAllUser] = useState();
+  const {user } = useStateContext();
 
   useEffect(() => {
     axiosClient.get('/user/all')
@@ -25,8 +27,8 @@ export default function AdminUsers() {
               // {/* Content */}
               <div className="flex flex-col p-4 rounded-lg shadow-lg bg-slate-50">
                 <div className="flex flex-row space-x-2">
-                  <div className="w-1/4">
-                    <img className='rounded-full p-1 border-2 lg:border-4 border-pink-500' src={user.profileUrl ? 'http://localhost:8081/image/profile?link=' + user.profileUrl : avater} alt="" />
+                  <div className="w-40 h-40">
+                    <img className='rounded-full p-1 border-2 w-40 h-32 lg:border-4 border-pink-500' src={user.profileUrl ? 'http://localhost:8081/image/profile?link=' + user.profileUrl : avater} alt="" />
                   </div>
                   <div className="flex flex-col w-full">
                     <h2 className='text-xl font-bold'>{user.name}</h2>
@@ -40,7 +42,7 @@ export default function AdminUsers() {
                     <h3 className='text-lg font-semibold'>Role : </h3>
                     <p>{user.role}</p>
                   </div>
-                  <button className='bg-blue-800 w-1/4 px-2 py-1 rounded-lg text-white font-semibold'>Make Admin</button>
+                  <button className='bg-blue-800 w-1/4 px-2 py-1 rounded-lg text-white font-semibold'>{(user.role == 'user') ? 'Make Admin' : 'Remove Admin'}</button>
                 </div>
                 <div className="flex flex-row space-x-2 mt-5 justify-between items-center">
                   <div className="flex flex-row w-3/4 items-center space-x-4">

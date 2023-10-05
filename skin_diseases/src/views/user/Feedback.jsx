@@ -83,7 +83,7 @@ export default function Feedback() {
               <div className="flex flex-col p-4 rounded-lg shadow-lg bg-slate-50">
                 <div className="flex flex-row space-x-2">
                   <div className="w-1/4">
-                    <img className='rounded-full h-14 p-1 border-2 lg:border-4 border-pink-500' src={feedback.profileUrl ? `${import.meta.env.VITE_API_BASE_URL}` + '/image/profile?link=' + feedback.profileUrl : avater} alt="" />
+                    <img className='rounded-full h-14 w-14 p-1 border-2 lg:border-4 border-pink-500' src={feedback.profileUrl ? `${import.meta.env.VITE_API_BASE_URL}` + '/image/profile?link=' + feedback.profileUrl : avater} alt="" />
                   </div>
                   <div className="flex flex-col w-full">
                     <h2 className='text-xl font-bold'>{feedback.userName}</h2>

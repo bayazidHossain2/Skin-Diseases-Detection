@@ -10,12 +10,12 @@ import About from "./views/user/About";
 import Diseases from "./views/user/Diseases";
 import Feedback from "./views/user/Feedback";
 import Profile from "./views/user/Profile";
-import AdminDashbord from "./views/admin/adminDashbord";
 import AdminUsers from "./views/admin/AdminUsers";
 import AdminFeedback from "./views/admin/AdminFeedback";
 import Content from "./views/admin/Content";
 import AdminDiseases from "./views/admin/AdminDiseases";
 import AdminTokens from "./views/admin/AdminTokens";
+import AdminDashbord from "./views/admin/AdminDashbord";
 
 
 const router = createBrowserRouter([
@@ -30,6 +30,10 @@ const router = createBrowserRouter([
         path: '/',
         element: <DefaultLayout/>,
         children: [
+            {
+                path: '/',
+                element: <AdminDashbord />
+            },
             {
                 path: '/admin-dashbord',
                 element: <AdminDashbord />
