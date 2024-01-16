@@ -5,16 +5,31 @@ import { useStateContext } from '../../contexts/contextProvider';
 
 export default function AdminUsers() {
   const [allUser, setAllUser] = useState();
-  const {user } = useStateContext();
+  const { user } = useStateContext();
 
   useEffect(() => {
+    getAllUsers()
+  }, [])
+
+  const getAllUsers = () => {
     axiosClient.get('/user/all')
       .then(({ data }) => {
         console.log('data added');
         console.log(data);
         setAllUser(data);
+      }) 
+  }
+
+  const onDelete = (id) => {
+    if (!confirm('Are you sure to delete.')) {
+      return
+    }
+    axiosClient.delete('/user/delete/' + id)
+      .then(({ data }) => {
+        console.log(data);
+        getAllUsers();
       })
-  }, [])
+  }
 
 
   return (
@@ -47,11 +62,11 @@ export default function AdminUsers() {
                 <div className="flex flex-row space-x-2 mt-5 justify-between items-center">
                   <div className="flex flex-row w-3/4 items-center space-x-4">
                     <h3 className='text-lg w-1/4 font-semibold'>Token: </h3>
-                    <p>{user.token ? user.token : 'User not actiove.'}</p>
+                    <p>{user.token ? user.token : 'User is not actiove.'}</p>
                   </div>
                   <button className='bg-red-800 w-1/4 px-2 py-1 rounded-lg text-white font-semibold'>Remove Token</button>
                 </div>
-                <button className='bg-red-600 mt-4 w-1/4 self-end px-2 py-1 rounded-lg text-white font-semibold'>Delete User</button>
+                <button onClick={(ev) => {ev.preventDefault(); onDelete(user.id) }} className='bg-red-600 mt-4 w-1/4 self-end px-2 py-1 rounded-lg text-white font-semibold'>Delete User</button>
               </div>
             ))
           }

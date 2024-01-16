@@ -27,4 +27,6 @@ public interface UserService {
     Long getAvailebaleSearch(Long id);
 
     void useSearch(Long userId);
+
+    void deleteUser(Long id);
 }

@@ -89,4 +89,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getCount());
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

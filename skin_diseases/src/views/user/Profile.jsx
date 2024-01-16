@@ -120,7 +120,7 @@ export default function Profile() {
                                 <h2 className={(user.availableSearch >= 3) ? 'text-2xl font-bold text-green-600' : 'text-2xl font-bold text-red-600'} >{user.availableSearch} times</h2>
 
                             </div>
-                            <button onClick={onResearch} className=' bg-orange-600 mt-2 px-4 py-2 rounded-md text-white self-start'>Research Now</button>
+                            <button onClick={onResearch} className=' bg-orange-600 mt-2 px-4 py-2 rounded-md text-white self-start'>Recharge Now</button>
                             {/* <button className=' self-start bg-blue-900 text-white px-2 py-1 rounded-md text-xl mt-2'>Edit</button> */}
                         </div>
                         {/* Profile image */}
